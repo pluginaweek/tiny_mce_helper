@@ -190,8 +190,8 @@ module PluginAWeek
         )
         
         # Check validity
-        plugins = options[:plugins]
-        options_to_validate = options.reject {|option, value| plugins.include?(option.split('_')[0]) || option =~ /theme_advanced_container_/}
+        plugins = options['plugins']
+        options_to_validate = options.reject {|option, value| plugins && plugins.include?(option.split('_')[0]) || option =~ /theme_advanced_container_/}
         options_to_validate.assert_valid_keys(@@valid_options)
         
         init_script = 'tinyMCE.init({'
