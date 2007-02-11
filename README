@@ -1,0 +1,33 @@
+= tiny_mce_helper
+
+tiny_mce_helper .
+
+== Resources
+
+Wiki
+
+* http://wiki.pluginaweek.org/Tiny_mce_helper
+
+Announcement
+
+* http://www.pluginaweek.org/
+
+Source
+
+* http://svn.pluginaweek.org/trunk/plugins/action_pack/tiny_mce_helper
+
+Development
+
+* http://dev.pluginaweek.org/browser/trunk/plugins/action_pack/tiny_mce_helper
+
+== Description
+
+== References
+
+This plugin provides for the installation and utilization of TinyMCE in Ruby on Rails applications. TinyMCE is a WYSIWYG HTML editing component 
+released under the GNU Public License (GPL) by Moxiecode Systems (http://tinymce.moxiecode.com/).
+
+This plugin is maintained by Blake Watters <blake@near-time.com>
+
+Bundled TinyMCE version: 2.0.6.1
+Documentation from the TinyMCE distribution is available in the doc subdirectory of the plugin
