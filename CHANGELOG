@@ -1,0 +1,7 @@
+*SVN*
+
+* Add working unit tests
+
+* Add installation and uninstallation scripts
+
+* Add rake tasks tiny_mce:install and tiny_mce:update_options

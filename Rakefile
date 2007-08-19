@@ -31,7 +31,7 @@ spec = Gem::Specification.new do |s|
   s.name            = PKG_NAME
   s.version         = PKG_VERSION
   s.platform        = Gem::Platform::RUBY
-  s.summary         = 'Adds helper methods for determining if a specified date/time was yesterday, today, or tomorrow.'
+  s.summary         = 'Adds helper methods for creating the TinyMCE initialization script.'
   
   s.files           = FileList['{lib,tasks,test}/**/*'].to_a + %w(init.rb MIT-LICENSE Rakefile README)
   s.require_path    = 'lib'
