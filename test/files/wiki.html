@@ -1,0 +1,361 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en" dir="ltr">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta name="keywords" content="TinyMCE:Configuration,Configuration/accessibility focus,Configuration/accessibility warnings,Configuration/add form submit trigger,Configuration/add unload trigger,Configuration/apply source formatting,Configuration/ask,Configuration/auto focus,Configuration/auto reset designmode,Configuration/auto resize,Configuration/browsers" />
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="search" type="application/opensearchdescription+xml" href="/opensearch_desc.php" title="Moxiecode Documentation Wiki (English)" />
+		<title>TinyMCE:Configuration - Moxiecode Documentation Wiki</title>
+		<style type="text/css" media="screen,projection">/*<![CDATA[*/ @import "/skins/monobook/main.css?9"; /*]]>*/</style>
+		<link rel="stylesheet" type="text/css" media="print" href="/skins/common/commonPrint.css" />
+		<!--[if lt IE 5.5000]><style type="text/css">@import "/skins/monobook/IE50Fixes.css";</style><![endif]-->
+		<!--[if IE 5.5000]><style type="text/css">@import "/skins/monobook/IE55Fixes.css";</style><![endif]-->
+		<!--[if IE 6]><style type="text/css">@import "/skins/monobook/IE60Fixes.css";</style><![endif]-->
+		<!--[if IE 7]><style type="text/css">@import "/skins/monobook/IE70Fixes.css?1";</style><![endif]-->
+		<!--[if lt IE 7]><script type="text/javascript" src="/skins/common/IEFixes.js"></script>
+		<meta http-equiv="imagetoolbar" content="no" /><![endif]-->
+		
+		<script type= "text/javascript">
+			var skin = "monobook";
+			var stylepath = "/skins";
+
+			var wgArticlePath = "/index.php/$1";
+			var wgScriptPath = "";
+			var wgServer = "http://wiki.moxiecode.com";
+                        
+			var wgCanonicalNamespace = "TinyMCE";
+			var wgNamespaceNumber = 100;
+			var wgPageName = "TinyMCE:Configuration";
+			var wgTitle = "Configuration";
+			var wgArticleId = 1515;
+			var wgIsArticle = true;
+                        
+			var wgUserName = null;
+			var wgUserLanguage = "en";
+			var wgContentLanguage = "en";
+		</script>
+		                
+		<script type="text/javascript" src="/skins/common/wikibits.js?1"><!-- wikibits js --></script>
+		<script type="text/javascript" src="/index.php?title=-&amp;action=raw&amp;gen=js"><!-- site js --></script>
+		<style type="text/css">/*<![CDATA[*/
+@import "/index.php?title=MediaWiki:Common.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=MediaWiki:Monobook.css&usemsgcache=yes&action=raw&ctype=text/css&smaxage=18000";
+@import "/index.php?title=-&action=raw&gen=css&maxage=18000";
+/*]]>*/</style>
+		<!-- Head Scripts -->
+			</head>
+<body  class="mediawiki ns-100 ltr">
+	<div id="globalWrapper">
+		<div id="column-content">
+	<div id="content">
+		<a name="top" id="top"></a>
+				<h1 class="firstHeading">TinyMCE:Configuration</h1>
+		<div id="bodyContent">
+			<h3 id="siteSub">From Moxiecode Documentation Wiki</h3>
+			<div id="contentSub"></div>
+									<div id="jump-to-nav">Jump to: <a href="#column-one">navigation</a>, <a href="#searchInput">search</a></div>			<!-- start content -->
+			<table id="toc" class="toc" summary="Contents"><tr><td><div id="toctitle"><h2>Contents</h2></div>
+<ul>
+<li class="toclevel-1"><a href="#Configuration_reference"><span class="tocnumber">1</span> <span class="toctext">Configuration reference</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Configuration_options"><span class="tocnumber">1.1</span> <span class="toctext">Configuration options</span></a>
+<ul>
+<li class="toclevel-3"><a href="#General"><span class="tocnumber">1.1.1</span> <span class="toctext">General</span></a></li>
+<li class="toclevel-3"><a href="#Callbacks"><span class="tocnumber">1.1.2</span> <span class="toctext">Callbacks</span></a></li>
+<li class="toclevel-3"><a href="#Cleanup.2FOutput"><span class="tocnumber">1.1.3</span> <span class="toctext">Cleanup/Output</span></a></li>
+<li class="toclevel-3"><a href="#URL"><span class="tocnumber">1.1.4</span> <span class="toctext">URL</span></a></li>
+<li class="toclevel-3"><a href="#Layout"><span class="tocnumber">1.1.5</span> <span class="toctext">Layout</span></a></li>
+<li class="toclevel-3"><a href="#Visual_aids"><span class="tocnumber">1.1.6</span> <span class="toctext">Visual aids</span></a></li>
+<li class="toclevel-3"><a href="#Undo.2FRedo"><span class="tocnumber">1.1.7</span> <span class="toctext">Undo/Redo</span></a></li>
+<li class="toclevel-3"><a href="#File_lists"><span class="tocnumber">1.1.8</span> <span class="toctext">File lists</span></a></li>
+<li class="toclevel-3"><a href="#Tab_specific"><span class="tocnumber">1.1.9</span> <span class="toctext">Tab specific</span></a></li>
+<li class="toclevel-3"><a href="#Triggers.2FPatches"><span class="tocnumber">1.1.10</span> <span class="toctext">Triggers/Patches</span></a></li>
+<li class="toclevel-3"><a href="#Advanced_theme"><span class="tocnumber">1.1.11</span> <span class="toctext">Advanced theme</span></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toclevel-1"><a href="#Initialization_of_TinyMCE"><span class="tocnumber">2</span> <span class="toctext">Initialization of TinyMCE</span></a>
+<ul>
+<li class="toclevel-2"><a href="#Example_of_TinyMCE_configuration"><span class="tocnumber">2.1</span> <span class="toctext">Example of TinyMCE configuration</span></a></li>
+</ul>
+</li>
+</ul>
+</td></tr></table><script type="text/javascript"> if (window.showTocToggle) { var tocShowText = "show"; var tocHideText = "hide"; showTocToggle(); } </script>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=1" title="Edit section: Configuration reference">edit</a>]</div><a name="Configuration_reference"></a><h2> Configuration reference </h2>
+<p>This document is the index/reference page for all available core configuration options in TinyMCE.
+</p>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=2" title="Edit section: Configuration options">edit</a>]</div><a name="Configuration_options"></a><h3> Configuration options </h3>
+<p>All configuration options below are to be placed within the tinyMCE.init() JavaScript call.
+</p>
+<div style="float: left; width: 260px; padding: 5px;">
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=3" title="Edit section: General">edit</a>]</div><a name="General"></a><h4> General </h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/accessibility_focus" title="TinyMCE:Configuration/accessibility focus">accessibility_focus</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/accessibility_warnings" title="TinyMCE:Configuration/accessibility warnings">accessibility_warnings</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/ask" title="TinyMCE:Configuration/ask">ask</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/auto_focus" title="TinyMCE:Configuration/auto focus">auto_focus</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/auto_reset_designmode" title="TinyMCE:Configuration/auto reset designmode">auto_reset_designmode</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/auto_resize" title="TinyMCE:Configuration/auto resize">auto_resize</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/browsers" title="TinyMCE:Configuration/browsers">browsers</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/button_tile_map" title="TinyMCE:Configuration/button tile map">button_tile_map</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/custom_shortcuts" title="TinyMCE:Configuration/custom shortcuts">custom_shortcuts</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/debug" title="TinyMCE:Configuration/debug">debug</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/default_document" title="TinyMCE:Configuration/default document">default_document</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/dialog_type" title="TinyMCE:Configuration/dialog type">dialog_type</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/directionality" title="TinyMCE:Configuration/directionality">directionality</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/docs_language" title="TinyMCE:Configuration/docs language">docs_language</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/editor_deselector" title="TinyMCE:Configuration/editor deselector">editor_deselector</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/editor_selector" title="TinyMCE:Configuration/editor selector">editor_selector</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/elements" title="TinyMCE:Configuration/elements">elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/event_elements" title="TinyMCE:Configuration/event elements">event_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/focus_alert" title="TinyMCE:Configuration/focus alert">focus_alert</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/gecko_spellcheck" title="TinyMCE:Configuration/gecko spellcheck">gecko_spellcheck</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/hide_selects_on_submit" title="TinyMCE:Configuration/hide selects on submit">hide_selects_on_submit</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/language" title="TinyMCE:Configuration/language">language</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/mode" title="TinyMCE:Configuration/mode">mode</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/nowrap" title="TinyMCE:Configuration/nowrap">nowrap</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/object_resizing" title="TinyMCE:Configuration/object resizing">object_resizing</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/plugins" title="TinyMCE:Configuration/plugins">plugins</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/strict_loading_mode" title="TinyMCE:Configuration/strict loading mode">strict_loading_mode</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/table_inline_editing" title="TinyMCE:Configuration/table inline editing">table_inline_editing</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/textarea_trigger" title="TinyMCE:Configuration/textarea trigger">textarea_trigger</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme" title="TinyMCE:Configuration/theme">theme</a>
+</li></ul>
+<p><br />
+</p>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=4" title="Edit section: Callbacks">edit</a>]</div><a name="Callbacks"></a><h4>Callbacks</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/cleanup_callback" title="TinyMCE:Configuration/cleanup callback">cleanup_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/execcommand_callback" title="TinyMCE:Configuration/execcommand callback">execcommand_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/file_browser_callback" title="TinyMCE:Configuration/file browser callback">file_browser_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/handle_event_callback" title="TinyMCE:Configuration/handle event callback">handle_event_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/handle_node_change_callback" title="TinyMCE:Configuration/handle node change callback">handle_node_change_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/init_instance_callback" title="TinyMCE:Configuration/init instance callback">init_instance_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/onchange_callback" title="TinyMCE:Configuration/onchange callback">onchange_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/oninit" title="TinyMCE:Configuration/oninit">oninit</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/onpageload" title="TinyMCE:Configuration/onpageload">onpageload</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/remove_instance_callback" title="TinyMCE:Configuration/remove instance callback">remove_instance_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/save_callback" title="TinyMCE:Configuration/save callback">save_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/setupcontent_callback" title="TinyMCE:Configuration/setupcontent callback">setupcontent_callback</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/urlconverter_callback" title="TinyMCE:Configuration/urlconverter callback">urlconverter_callback</a>
+</li></ul>
+<p><br />
+</p>
+</div>
+<div style="float: left; width: 260px; padding: 5px;">
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=5" title="Edit section: Cleanup/Output">edit</a>]</div><a name="Cleanup.2FOutput"></a><h4>Cleanup/Output</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/apply_source_formatting" title="TinyMCE:Configuration/apply source formatting">apply_source_formatting</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/cleanup" title="TinyMCE:Configuration/cleanup">cleanup</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/cleanup_on_startup" title="TinyMCE:Configuration/cleanup on startup">cleanup_on_startup</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/cleanup_serializer" title="TinyMCE:Configuration/cleanup serializer">cleanup_serializer</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/convert_fonts_to_spans" title="TinyMCE:Configuration/convert fonts to spans">convert_fonts_to_spans</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/convert_newlines_to_brs" title="TinyMCE:Configuration/convert newlines to brs">convert_newlines_to_brs</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/doctype" title="TinyMCE:Configuration/doctype">doctype</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/encoding" title="TinyMCE:Configuration/encoding">encoding</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/entities" title="TinyMCE:Configuration/entities">entities</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/entity_encoding" title="TinyMCE:Configuration/entity encoding">entity_encoding</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/extended_valid_elements" title="TinyMCE:Configuration/extended valid elements">extended_valid_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/fix_content_duplication" title="TinyMCE:Configuration/fix content duplication">fix_content_duplication</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/fix_list_elements" title="TinyMCE:Configuration/fix list elements">fix_list_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/fix_table_elements" title="TinyMCE:Configuration/fix table elements">fix_table_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/font_size_classes" title="TinyMCE:Configuration/font size classes">font_size_classes</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/font_size_style_values" title="TinyMCE:Configuration/font size style values">font_size_style_values</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/force_p_newlines" title="TinyMCE:Configuration/force p newlines">force_p_newlines</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/force_br_newlines" title="TinyMCE:Configuration/force br newlines">force_br_newlines</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/force_hex_style_colors" title="TinyMCE:Configuration/force hex style colors">force_hex_style_colors</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/forced_root_block" title="TinyMCE:Configuration/forced root block">forced_root_block</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/inline_styles" title="TinyMCE:Configuration/inline styles">inline_styles</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/invalid_elements" title="TinyMCE:Configuration/invalid elements">invalid_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/merge_styles_invalid_parents" title="TinyMCE:Configuration/merge styles invalid parents">merge_styles_invalid_parents</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/remove_linebreaks" title="TinyMCE:Configuration/remove linebreaks">remove_linebreaks</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/remove_trailing_nbsp" title="TinyMCE:Configuration/remove trailing nbsp">remove_trailing_nbsp</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/preformatted" title="TinyMCE:Configuration/preformatted">preformatted</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/trim_span_elements" title="TinyMCE:Configuration/trim span elements">trim_span_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/valid_child_elements" title="TinyMCE:Configuration/valid child elements">valid_child_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/valid_elements" title="TinyMCE:Configuration/valid elements">valid_elements</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/verify_css_classes" title="TinyMCE:Configuration/verify css classes">verify_css_classes</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/verify_html" title="TinyMCE:Configuration/verify html">verify_html</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=6" title="Edit section: URL">edit</a>]</div><a name="URL"></a><h4>URL</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/convert_urls" title="TinyMCE:Configuration/convert urls">convert_urls</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/relative_urls" title="TinyMCE:Configuration/relative urls">relative_urls</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/remove_script_host" title="TinyMCE:Configuration/remove script host">remove_script_host</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/document_base_url" title="TinyMCE:Configuration/document base url">document_base_url</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=7" title="Edit section: Layout">edit</a>]</div><a name="Layout"></a><h4>Layout</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/content_css" title="TinyMCE:Configuration/content css">content_css</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/popups_css" title="TinyMCE:Configuration/popups css">popups_css</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/popups_css_add" title="TinyMCE:Configuration/popups css add">popups_css_add</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/editor_css" title="TinyMCE:Configuration/editor css">editor_css</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/width" title="TinyMCE:Configuration/width">width</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/height" title="TinyMCE:Configuration/height">height</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=8" title="Edit section: Visual aids">edit</a>]</div><a name="Visual_aids"></a><h4>Visual aids</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/visual" title="TinyMCE:Configuration/visual">visual</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/visual_table_class" title="TinyMCE:Configuration/visual table class">visual_table_class</a>
+</li></ul>
+</div>
+<div style="float: left; width: 260px; padding: 5px;">
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=9" title="Edit section: Undo/Redo">edit</a>]</div><a name="Undo.2FRedo"></a><h4>Undo/Redo</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/custom_undo_redo" title="TinyMCE:Configuration/custom undo redo">custom_undo_redo</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/custom_undo_redo_levels" title="TinyMCE:Configuration/custom undo redo levels">custom_undo_redo_levels</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/custom_undo_redo_keyboard_shortcuts" title="TinyMCE:Configuration/custom undo redo keyboard shortcuts">custom_undo_redo_keyboard_shortcuts</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/custom_undo_redo_restore_selection" title="TinyMCE:Configuration/custom undo redo restore selection">custom_undo_redo_restore_selection</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=10" title="Edit section: File lists">edit</a>]</div><a name="File_lists"></a><h4>File lists</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/external_link_list_url" title="TinyMCE:Configuration/external link list url">external_link_list_url</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/external_image_list_url" title="TinyMCE:Configuration/external image list url">external_image_list_url</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=11" title="Edit section: Tab specific">edit</a>]</div><a name="Tab_specific"></a><h4>Tab specific</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/display_tab_class" title="TinyMCE:Configuration/display tab class">display_tab_class</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/hidden_tab_class" title="TinyMCE:Configuration/hidden tab class">hidden_tab_class</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=12" title="Edit section: Triggers/Patches">edit</a>]</div><a name="Triggers.2FPatches"></a><h4>Triggers/Patches</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/add_form_submit_trigger" title="TinyMCE:Configuration/add form submit trigger">add_form_submit_trigger</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/add_unload_trigger" title="TinyMCE:Configuration/add unload trigger">add_unload_trigger</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/submit_patch" title="TinyMCE:Configuration/submit patch">submit_patch</a>
+</li></ul>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=13" title="Edit section: Advanced theme">edit</a>]</div><a name="Advanced_theme"></a><h4>Advanced theme</h4>
+<ul><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_layout_manager" title="TinyMCE:Configuration/theme advanced layout manager">theme_advanced_layout_manager</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_blockformats" title="TinyMCE:Configuration/theme advanced blockformats">theme_advanced_blockformats</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_styles" title="TinyMCE:Configuration/theme advanced styles">theme_advanced_styles</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_source_editor_width" title="TinyMCE:Configuration/theme advanced source editor width">theme_advanced_source_editor_width</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_source_editor_height" title="TinyMCE:Configuration/theme advanced source editor height">theme_advanced_source_editor_height</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_source_editor_wrap" title="TinyMCE:Configuration/theme advanced source editor wrap">theme_advanced_source_editor_wrap</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_toolbar_location" title="TinyMCE:Configuration/theme advanced toolbar location">theme_advanced_toolbar_location</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_toolbar_align" title="TinyMCE:Configuration/theme advanced toolbar align">theme_advanced_toolbar_align</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_statusbar_location" title="TinyMCE:Configuration/theme advanced statusbar location">theme_advanced_statusbar_location</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_buttons_1_n" title="TinyMCE:Configuration/theme advanced buttons 1 n">theme_advanced_buttons&lt;1-n&gt;</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_buttons_1_n_add" title="TinyMCE:Configuration/theme advanced buttons 1 n add">theme_advanced_buttons&lt;1-n&gt;_add</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_buttons_1_n_add_before" title="TinyMCE:Configuration/theme advanced buttons 1 n add before">theme_advanced_buttons&lt;1-n&gt;_add_before</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_disable" title="TinyMCE:Configuration/theme advanced disable">theme_advanced_disable</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_containers" title="TinyMCE:Configuration/theme advanced containers">theme_advanced_containers</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_containers_default_class" title="TinyMCE:Configuration/theme advanced containers default class">theme_advanced_containers_default_class</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_containers_default_align" title="TinyMCE:Configuration/theme advanced containers default align">theme_advanced_containers_default_align</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_container_container" title="TinyMCE:Configuration/theme advanced container container">theme_advanced_container_&lt;container&gt;</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_container_container_class" title="TinyMCE:Configuration/theme advanced container container class">theme_advanced_container_&lt;container&gt;_class</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_container_container_align" title="TinyMCE:Configuration/theme advanced container container align">theme_advanced_container_&lt;container&gt;_align</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_custom_layout" title="TinyMCE:Configuration/theme advanced custom layout">theme_advanced_custom_layout</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_link_targets" title="TinyMCE:Configuration/theme advanced link targets">theme_advanced_link_targets</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_resizing" title="TinyMCE:Configuration/theme advanced resizing">theme_advanced_resizing</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_resizing_use_cookie" title="TinyMCE:Configuration/theme advanced resizing use cookie">theme_advanced_resizing_use_cookie</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_resize_horizontal" title="TinyMCE:Configuration/theme advanced resize horizontal">theme_advanced_resize_horizontal</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_path" title="TinyMCE:Configuration/theme advanced path">theme_advanced_path</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_fonts" title="TinyMCE:Configuration/theme advanced fonts">theme_advanced_fonts</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_text_colors" title="TinyMCE:Configuration/theme advanced text colors">theme_advanced_text_colors</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_background_colors" title="TinyMCE:Configuration/theme advanced background colors">theme_advanced_background_colors</a>
+</li><li> <a href="/index.php/TinyMCE:Configuration/theme_advanced_more_colors" title="TinyMCE:Configuration/theme advanced more colors">theme_advanced_more_colors</a>
+</li></ul>
+</div>
+<div style="clear: both;">&nbsp;</div>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=14" title="Edit section: Initialization of TinyMCE">edit</a>]</div><a name="Initialization_of_TinyMCE"></a><h2>Initialization of TinyMCE</h2>
+<p>In order to initialize the TinyMCE the following code must be placed within HEAD element of a document. The following example is configured to convert all TEXTAREA elements into editors when the page loads.  There are other <a href="/index.php/TinyMCE:Configuration/mode" title="TinyMCE:Configuration/mode">modes</a> as well.
+</p>
+<div class="editsection" style="float:right;margin-left:5px;">[<a href="/index.php?title=TinyMCE:Configuration&amp;action=edit&amp;section=15" title="Edit section: Example of TinyMCE configuration">edit</a>]</div><a name="Example_of_TinyMCE_configuration"></a><h4>Example of TinyMCE configuration</h4>
+<pre>
+&lt;html&gt;
+&lt;head&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot; src=&quot;../jscripts/tiny_mce/tiny_mce.js&quot;&gt;&lt;/script&gt;
+&lt;script language=&quot;javascript&quot; type=&quot;text/javascript&quot;&gt;
+tinyMCE.init({
+	theme&nbsp;: &quot;advanced&quot;,
+	mode&nbsp;: &quot;textareas&quot;
+});
+&lt;/script&gt;
+&lt;/head&gt;
+</pre>
+<p>Note: Remember to remove the last "," character in the options list.
+</p>
+<!-- Saved in parser cache with key docwiki:pcache:idhash:1515-0!1!0!!en!2 and timestamp 20070819194128 -->
+<div class="printfooter">
+Retrieved from "<a href="http://wiki.moxiecode.com/index.php/TinyMCE:Configuration">http://wiki.moxiecode.com/index.php/TinyMCE:Configuration</a>"</div>
+						<!-- end content -->
+			<div class="visualClear"></div>
+		</div>
+	</div>
+		</div>
+		<div id="column-one">
+	<div id="p-cactions" class="portlet">
+		<h5>Views</h5>
+		<ul>
+				 <li id="ca-nstab-tinymce" class="selected"><a href="/index.php/TinyMCE:Configuration">TinyMCE</a></li>
+				 <li id="ca-talk" class="new"><a href="/index.php?title=TinyMCE_Talk:Configuration&amp;action=edit">Discussion</a></li>
+				 <li id="ca-edit"><a href="/index.php?title=TinyMCE:Configuration&amp;action=edit">Edit</a></li>
+				 <li id="ca-history"><a href="/index.php?title=TinyMCE:Configuration&amp;action=history">History</a></li>
+		</ul>
+	</div>
+	<div class="portlet" id="p-personal">
+		<h5>Personal tools</h5>
+		<div class="pBody">
+			<ul>
+				<li id="pt-login"><a href="/index.php?title=Special:Userlogin&amp;returnto=TinyMCE:Configuration">Log in / create account</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-logo">
+		<a style="background-image: url(/images/logo.gif);" href="/index.php/Main_Page" title="Main Page"></a>
+	</div>
+	<script type="text/javascript"> if (window.isMSIE55) fixalpha(); </script>
+		<div class='portlet' id='p-Documentation'>
+		<h5>Documentation</h5>
+		<div class='pBody'>
+			<ul>
+				<li id="n-TinyMCE"><a href="/index.php/TinyMCE:Index">TinyMCE</a></li>
+				<li id="n-TinyMCE-FAQ"><a href="/index.php/TinyMCE:FAQ">TinyMCE FAQ</a></li>
+				<li id="n-TinyMCE-Compressor"><a href="/index.php/TinyMCE:Compressor">TinyMCE Compressor</a></li>
+				<li id="n-TinyMCE-Spellchecker"><a href="/index.php/TinyMCE:Plugins/spellchecker">TinyMCE Spellchecker</a></li>
+				<li id="n-MCImageManager"><a href="/index.php/MCImageManager:Index">MCImageManager</a></li>
+				<li id="n-MCFileManager"><a href="/index.php/MCFileManager:Index">MCFileManager</a></li>
+				<li id="n-recentchanges"><a href="/index.php/Special:Recentchanges">Recent changes</a></li>
+			</ul>
+		</div>
+	</div>
+		<div id="p-search" class="portlet">
+		<h5><label for="searchInput">Search</label></h5>
+		<div id="searchBody" class="pBody">
+			<form action="/index.php/Special:Search" id="searchform"><div>
+				<input id="searchInput" name="search" type="text" accesskey="f" value="" />
+				<input type='submit' name="go" class="searchButton" id="searchGoButton"	value="Go" />&nbsp;
+				<input type='submit' name="fulltext" class="searchButton" value="Search" />
+			</div></form>
+		</div>
+	</div>
+	<div class="portlet" id="p-tb">
+		<h5>Toolbox</h5>
+		<div class="pBody">
+			<ul>
+				<li id="t-whatlinkshere"><a href="/index.php?title=Special:Whatlinkshere&amp;target=TinyMCE%3AConfiguration">What links here</a></li>
+				<li id="t-recentchangeslinked"><a href="/index.php?title=Special:Recentchangeslinked&amp;target=TinyMCE%3AConfiguration">Related changes</a></li>
+<li id="t-specialpages"><a href="/index.php/Special:Specialpages">Special pages</a></li>
+				<li id="t-print"><a href="/index.php?title=TinyMCE:Configuration&amp;printable=yes">Printable version</a></li>				<li id="t-permalink"><a href="/index.php?title=TinyMCE:Configuration&amp;oldid=2888">Permanent link</a></li>			</ul>
+		</div>
+	</div>
+	<div class="portlet" id="p-ex">
+	<h5>External links</h5>
+		<div class="pBody">
+			<ul>
+				<li><a href="http://tinymce.moxiecode.com">TinyMCE Website</a></li>
+				<li><a href="http://tinymce.moxiecode.com/forum">TinyMCE Forum</a></li>
+				<li><a href="http://www.moxiecode.com">Moxiecode Website</a></li>
+				<li><a href="http://www.w3schools.com/">W3Schools Website</a></li>
+				<li><a href="http://www.fiddlertool.com/fiddler/">Fiddler Tool</a></li>
+				<li><a href="http://sourceforge.net/tracker/?atid=635682&group_id=103281&func=browse">Report a bug</a></li>
+			</ul>
+		</div>
+	</div>
+		</div><!-- end of the left (by default at least) column -->
+			<div class="visualClear"></div>
+			<div id="footer">
+				<div id="f-poweredbyico"><a href="http://www.mediawiki.org/"><img src="/skins/common/images/poweredby_mediawiki_88x31.png" alt="MediaWiki" /></a></div>
+			<ul id="f-list">
+				<li id="lastmod"> This page was last modified 15:32, 17 May 2007.</li>
+				<li id="viewcount">This page has been accessed 194,097 times.</li>
+				<li id="privacy"><a href="/index.php/Moxiecode_Documentation_Wiki:Privacy_policy" title="Moxiecode Documentation Wiki:Privacy policy">Privacy policy</a></li>
+				<li id="about"><a href="/index.php/Moxiecode_Documentation_Wiki:About" title="Moxiecode Documentation Wiki:About">About Moxiecode Documentation Wiki</a></li>
+				<li id="disclaimer"><a href="/index.php/Moxiecode_Documentation_Wiki:General_disclaimer" title="Moxiecode Documentation Wiki:General disclaimer">Disclaimers</a></li>
+			</ul>
+		</div>
+		
+	
+		<script type="text/javascript">if (window.runOnloadHook) runOnloadHook();</script>
+</div>
+<!-- Served by monster in 0.148 secs. --></body></html>

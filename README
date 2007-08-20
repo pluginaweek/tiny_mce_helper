@@ -32,19 +32,141 @@ tasks.
 
 == Description
 
-
+TinyMCE is a rich text editor written in Javascript.  This helper plugin helps
+make it easier to validate your code and include the TinyMCE initialization
+script.  It also provides various tasks for installing/updating TinyMCE.
 
 === Installing TinyMCE
 
+To install TinyMCE, you can use the tiny_mce:install task.  This will download
+the latest version (or one specified by you) from Sourceforge and extract it
+into your application's public/javascripts folder.
 
+For example, to install the latest version:
+
+  $ rake tiny_mce:install
+  (in /my/project)
+  Downloading TinyMCE source...
+  Extracting...
+  Done!
+
+To install a custom version:
+
+  $ rake tiny_mce:install VERSION=2.0.8
+  (in /my/project)
+  Downloading TinyMCE source...
+  Extracting...
+  Done!
+
+If tinymce already exists in your application's public/javascript folder, the
+rake task will prompt you as to whether or not it should be overwritten:
+
+  $ rake tiny_mce:install
+  (in /my/project)
+  TinyMCE already be installed in /my/project/config/../public/javascripts/tinymce. Overwrite? (y/n): y
+  Downloading TinyMCE source...
+  Extracting...
+  Done!
+
+=== Updating TinyMCE
+
+If you have already installed TinyMCE and wish to update to the latest version,
+you can run the tiny_mce:update task.  This will overwrite the current TinyMCE
+installation and WILL NOT prompt you if the folder already exists.  For example,
+
+  $ rake tiny_mce:update
+  (in /my/project)
+  Downloading TinyMCE source...
+  Extracting...
+  Done!
+
+Like tiny_mce:install, you can also specify a custom version:
+
+  $ rake tiny_mce:update VERSION=2.0.9
+  (in /my/project)
+  Downloading TinyMCE source...
+  Extracting...
+  Done!
 
 === Updating configuration options
 
+In addition to installing the Javascript source, tiny_mce_helper is also able to
+validate the options that are passed in to initialize TinyMCE.  Since these
+options can change over time, a configuration file is generated based on
+information from the TinyMCE wiki.  This configuration file contains a list of
+all of the current possible options that can be specified.
 
+For example, to create a new configuration file:
+
+  $ rake tiny_mce:update VERSION=2.0.9
+  (in /my/project)
+  Downloading configuration options from TinyMCE Wiki...
+  Done!
+
+This will create config/tiny_mce_options.yml.  The content of the configuration
+should look similar to:
+
+  --- 
+  - accessibility_focus
+  - accessibility_warnings
+  - add_form_submit_trigger
+  - add_unload_trigger
+  - apply_source_formatting
+  - ask
+  - auto_focus
+  - auto_reset_designmode
+  - auto_resize
+  - browsers
+  - button_tile_map
+  - cleanup
+  - cleanup_callback
+  - cleanup_on_startup
+  - cleanup_serializer
+  ...
+
+=== Uninstalling TinyMCE
+
+Uninstalling TinyMCE will remove the javascript source and the configuration
+options.  To invoke the installation, run the rake task tiny_mce:uninstall.
+
+  $ rake tiny_mce:uninstall
+  (in /my/project)
 
 === Creating TinyMCE script
 
+To create the TinyMCE initialization script:
 
+application.rhtml:
+  <%=
+    tiny_mce_init_script(
+      :theme => 'advanced',
+      :editor_selector => 'rich_text',
+      :content_css => '/stylesheets/tiny_mce_content.css',
+      :editor_css => '/stylesheets/tiny_mce_editor.css',
+      :auto_reset_designmode => true
+    )
+  %>
+
+will generate the following javascript:
+
+  tinyMCE.init({
+    'mode' : 'textareas',
+    'theme' : 'advanced',
+    'editor_selected' : 'rich_text',
+    'content_css' : '/stylesheets/tiny_mce_content.css'
+  });
+
+To see additional initialization helpers, see the API for PluginAWeek::Helpers::TinyMCEHelper
+
+== Testing
+
+Since the rake tasks for installing TinyMCE and updating the configuration
+options are part of the unit tests, already-downloaded files are included with
+the plugin.  If you want to perform a "live" test which actually downloads the
+files off the Internet (rather than using the local versions), you must set
+the LIVE environment variable to true.  For example,
+
+  rake test LIVE=true
 
 == References
 

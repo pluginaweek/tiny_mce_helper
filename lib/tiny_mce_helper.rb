@@ -7,6 +7,14 @@ module PluginAWeek #:nodoc:
       # to configure TinyMCE
       OPTIONS_FILE_PATH = "#{RAILS_ROOT}/config/tiny_mce_options.yml"
       
+      # A regular expression matching options that are dynamic (i.e. they can
+      # vary on an integer or string basis)
+      DYNAMIC_OPTIONS = /theme_advanced_buttons|theme_advanced_container/
+      
+      # Whether or not to use verbose output
+      mattr_accessor :verbose
+      @@verbose = true
+      
       # A list of all valid options that can be used to configure TinyMCE
       mattr_accessor :valid_options
       @@valid_options = File.exists?(OPTIONS_FILE_PATH) ? File.open(OPTIONS_FILE_PATH) {|f| YAML.load(f.read)} : []
@@ -35,13 +43,17 @@ module PluginAWeek #:nodoc:
         # 
         # For example,
         #   PluginAWeek::Helpers::TinyMCEHelper.install(nil, 'public/javascripts/richtext')
-        def install(version = nil, base_target = nil, force = false)
-          base_target ||= 'public/javascripts/tinymce'
+        def install(options = {})
+          options.assert_valid_keys(:version, :target, :force)
+          options.reverse_merge!(:force => false)
+          
+          version = options[:version]
+          base_target = options[:target] || 'public/javascripts/tinymce'
           source_path = 'tinymce'
-          target_path = File.join(RAILS_ROOT, base_target)
+          target_path = File.expand_path(File.join(RAILS_ROOT, base_target))
           
           # If TinyMCE is already installed, make sure the user wants to continue
-          if !force && File.exists?(target_path)
+          if !options[:force] && File.exists?(target_path)
             print "TinyMCE already be installed in #{target_path}. Overwrite? (y/n): "
             while !%w(y n).include?(option = STDIN.gets.chop)
               print "Invalid option. Overwrite #{target_path}? (y/n): "
@@ -69,18 +81,29 @@ module PluginAWeek #:nodoc:
           # Download and install it
           Dir.chdir('/tmp/') do
             begin
-              puts 'Downloading TinyMCE source...'
+              puts 'Downloading TinyMCE source...' if verbose
               system("wget '#{file_url}' &> wget.log")
-              puts 'Extracting...'
+              puts 'Extracting...' if verbose
               system("tar xf #{filename} &> tar.log")
               File.delete(filename)
               FileUtils.mkdir_p(target_path)
-              FileUtils.mv(source_path, target_path, :force => true)
-              puts 'Done!'
+              FileUtils.cp_r("#{source_path}/.", target_path)
+              FileUtils.rmtree(source_path)
+              puts 'Done!' if verbose
             rescue Object => e
-              puts "Error: See the last modified log file (wget.log or tar.log) in /tmp/."
+              puts "Error: #{e.inspect}"
+              puts 'Also see the last modified log file (wget.log or tar.log) in /tmp/.'
             end
           end
+        end
+        
+        # Uninstalls the TinyMCE installation and optional configuration file
+        def uninstall
+          # Remove the TinyMCE configuration file
+          File.delete(OPTIONS_FILE_PATH)
+          
+          # Remove the TinyMCE installation
+          FileUtils.rm_rf("#{RAILS_ROOT}/public/javascripts/tinymce")
         end
         
         # Updates the list of possible configuration options that can be used
@@ -93,21 +116,21 @@ module PluginAWeek #:nodoc:
           require 'open-uri'
           require 'yaml'
           
-          puts 'Downloading configuration options from TinyMCE Wiki...'
+          puts 'Downloading configuration options from TinyMCE Wiki...' if verbose
           doc = Hpricot(open('http://wiki.moxiecode.com/index.php/TinyMCE:Configuration'))
           options = (doc/'a[@title*="Configuration/"]/').collect {|option| option.to_s}.sort
-          options.reject! {|option| option =~ /theme_advanced_buttons|theme_advanced_container/}
+          options.reject! {|option| option =~ DYNAMIC_OPTIONS}
           
-          File.open('config/tiny_mce_options.yml', 'w') do |out|
+          File.open("#{RAILS_ROOT}/config/tiny_mce_options.yml", 'w') do |out|
             YAML.dump(options, out)
           end
-          puts 'Done!'
+          puts 'Done!' if verbose
         end
       end
       
       # Are we using TinyMCE?
       def using_tiny_mce?
-        !@uses_tiny_mce.nil?
+        @uses_tiny_mce
       end
       
       # Create the TinyMCE initialization scripts.  The default configuration
@@ -150,14 +173,14 @@ module PluginAWeek #:nodoc:
       def tiny_mce_init_script(options = @tiny_mce_options)
         options ||= {}
         options.stringify_keys!.reverse_merge!(
-           'mode' => 'textareas',
-           'theme' => 'simple'
+          'mode' => 'textareas',
+          'theme' => 'simple'
         )
         
         # Check validity
         plugins = options['plugins']
-        options_to_validate = options.reject {|option, value| plugins && plugins.include?(option.split('_')[0]) || option =~ /theme_advanced_container_/}
-        options_to_validate.assert_valid_keys(@@valid_options) if @@valid_options.any?
+        options_to_validate = options.reject {|option, value| plugins && plugins.include?(option.split('_')[0]) || option =~ DYNAMIC_OPTIONS}
+        options_to_validate.assert_valid_keys(@@valid_options) if @@valid_options && @@valid_options.any?
         
         init_script = 'tinyMCE.init({'
         
@@ -168,7 +191,7 @@ module PluginAWeek #:nodoc:
             when String, Symbol, Fixnum
               init_script << "'#{value}'"
             when Array
-              init_script << '"' + value.join(',') + '"'
+              init_script << "'#{value.join(',')}'"
             when TrueClass
               init_script << 'true'
             when FalseClass

@@ -1,5 +1,11 @@
 *SVN*
 
+*0.0.1* (August 20th, 2007)
+
+* Add README documentation
+
+* Add tiny_mce:uninstall and tiny_mce:update rake tasks
+
 * Add working unit tests
 
 * Add installation and uninstallation scripts
