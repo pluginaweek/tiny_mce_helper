@@ -33,7 +33,7 @@ spec = Gem::Specification.new do |s|
   s.platform        = Gem::Platform::RUBY
   s.summary         = 'Adds helper methods for creating the TinyMCE initialization script.'
   
-  s.files           = FileList['{lib,tasks,test}/**/*'].to_a + %w(init.rb MIT-LICENSE Rakefile README)
+  s.files           = FileList['{lib,tasks,test}/**/*'].to_a + %w(CHANGELOG init.rb install.rb Rakefile README uninstall.rb)
   s.require_path    = 'lib'
   s.autorequire     = 'tiny_mce_helper'
   s.has_rdoc        = true
