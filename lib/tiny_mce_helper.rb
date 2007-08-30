@@ -37,7 +37,7 @@ module PluginAWeek #:nodoc:
         # 
         # == Target path
         # 
-        # By default, this will install TinyMCE into RAILS_ROOT/public/javascripts/tinymce.
+        # By default, this will install TinyMCE into RAILS_ROOT/public/javascripts/tiny_mce.
         # If you want to install it to a different directory, you can pass in
         # a parameter with the relative path from RAILS_ROOT.
         # 
@@ -48,7 +48,7 @@ module PluginAWeek #:nodoc:
           options.reverse_merge!(:force => false)
           
           version = options[:version]
-          base_target = options[:target] || 'public/javascripts/tinymce'
+          base_target = options[:target] || 'public/javascripts/tiny_mce'
           source_path = 'tinymce'
           target_path = File.expand_path(File.join(RAILS_ROOT, base_target))
           
@@ -87,7 +87,7 @@ module PluginAWeek #:nodoc:
               system("tar xf #{filename} &> tar.log")
               File.delete(filename)
               FileUtils.mkdir_p(target_path)
-              FileUtils.cp_r("#{source_path}/.", target_path)
+              FileUtils.cp_r("#{source_path}/jscripts/tiny_mce/.", target_path)
               FileUtils.rmtree(source_path)
               puts 'Done!' if verbose
             rescue Object => e
@@ -103,7 +103,7 @@ module PluginAWeek #:nodoc:
           File.delete(OPTIONS_FILE_PATH)
           
           # Remove the TinyMCE installation
-          FileUtils.rm_rf("#{RAILS_ROOT}/public/javascripts/tinymce")
+          FileUtils.rm_rf("#{RAILS_ROOT}/public/javascripts/tiny_mce")
         end
         
         # Updates the list of possible configuration options that can be used
@@ -216,7 +216,7 @@ module PluginAWeek #:nodoc:
       # issues that occur within TinyMCE.  In production, the compressed version
       # of TinyMCE will be used in order to increased download speed.
       def tiny_mce_file_name
-        RAILS_ENV == 'development' ? 'tinymce/tiny_mce_src' : 'tinymce/tiny_mce'
+        RAILS_ENV == 'development' ? 'tiny_mce/tiny_mce_src' : 'tiny_mce/tiny_mce'
       end
       
       # Generates the javascript include for TinyMCE.  For example,
@@ -225,7 +225,7 @@ module PluginAWeek #:nodoc:
       # 
       # will generate:
       # 
-      #   <script type="text/javascript" src="/javascripts/tinymce/tiny_mce.js"></script>
+      #   <script type="text/javascript" src="/javascripts/tiny_mce/tiny_mce.js"></script>
       def javascript_include_tiny_mce
         javascript_include_tag tiny_mce_file_name
       end
