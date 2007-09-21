@@ -145,7 +145,7 @@ module PluginAWeek #:nodoc:
       # == Customizing initialization options
       # 
       # To customize the options to be included in the initialization script,
-      # you can pass in a hash to #tiny_mce_init_script.  For example,
+      # you can pass in a hash to +tiny_mce_init_script+.  For example,
       # 
       #   tiny_mce_init_script(
       #     :theme => 'advanced',

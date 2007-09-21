@@ -1,5 +1,7 @@
 *SVN*
 
+* Remove gem dependency on actionpack
+
 *0.0.1* (August 20th, 2007)
 
 * Add README documentation

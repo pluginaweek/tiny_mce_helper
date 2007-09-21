@@ -1,6 +1,6 @@
 = tiny_mce_helper
 
-tiny_mce_helper adds helper methods for creating the TinyMCE initialization
++tiny_mce_helper+ adds helper methods for creating the TinyMCE initialization
 script.
 
 == Resources
@@ -15,7 +15,7 @@ Wiki
 
 Announcement
 
-* http://www.pluginaweek.org/
+* http://www.pluginaweek.org
 
 Source
 
@@ -25,16 +25,18 @@ Development
 
 * http://dev.pluginaweek.org/browser/trunk/plugins/action_pack/tiny_mce_helper
 
-== Requirements
-
-Currently, you must be running a version of Linux in order to run the rake
-tasks.
-
 == Description
 
 TinyMCE is a rich text editor written in Javascript.  This helper plugin helps
 make it easier to validate your code and include the TinyMCE initialization
 script.  It also provides various tasks for installing/updating TinyMCE.
+
+=== Usage
+
+=== Requirements
+
+Currently, you must be running a version of Linux in order to run the rake
+tasks.
 
 === Installing TinyMCE
 

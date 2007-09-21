@@ -38,7 +38,6 @@ spec = Gem::Specification.new do |s|
   s.autorequire     = 'tiny_mce_helper'
   s.has_rdoc        = true
   s.test_files      = Dir['test/**/*_test.rb']
-  s.add_dependency  'actionpack', '>= 1.13.1'
   
   s.author          = 'Aaron Pfeifer, Neil Abraham'
   s.email           = 'info@pluginaweek.org'
