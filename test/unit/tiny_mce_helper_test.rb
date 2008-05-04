@@ -2,8 +2,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 
 # Don't go out to the Internet if we're not live
 unless ENV['LIVE']
-  class << PluginAWeek::Helpers::TinyMCEHelper
-    # Use pages ewe've already downloaded for Sourceforge and Wiki information
+  class << PluginAWeek::TinyMCEHelper
+    # Use pages we've already downloaded for Sourceforge and Wiki information
     def open(name, *rest, &block)
       if name.include?('sourceforge')
         name = 'test/files/sourceforge.html'
@@ -16,10 +16,14 @@ unless ENV['LIVE']
     
     # User files we've already downloaded for extracting the TinyMCE soure
     def system(cmd, *args)
-      if cmd =~ /^wget .+2_0_8/
-        FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../../test/files/tinymce_2_0_8.tgz", '/tmp/')
-      elsif cmd =~ /^wget .+2_1_1_1/
-        FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../../test/files/tinymce_2_1_1_1.tgz", '/tmp/')
+      if cmd == 'wget'
+        if args.first =~ /3_0_8/
+          FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip", '/tmp/')
+        elsif args.first =~ /3_0_6_2/
+          FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_6_2.zip", '/tmp/')
+        else
+          super
+        end
       else
         super
       end
@@ -41,32 +45,157 @@ class << STDIN
   end
 end
 
-class TinyMceHelperTest < Test::Unit::TestCase
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::AssetTagHelper
-  include ActionView::Helpers::JavaScriptHelper
-  include PluginAWeek::Helpers::TinyMCEHelper
-  
+class TinyMceInstallerTest < Test::Unit::TestCase
   def setup
-    PluginAWeek::Helpers::TinyMCEHelper.verbose = true
-    @uses_tiny_mce = nil
-    
-    # Set up config path
-    @config_root = "#{RAILS_ROOT}/config"
-    FileUtils.cp("#{RAILS_ROOT}/config_bak/tiny_mce_options.yml", @config_root)
-    @original_config_files = Dir["#{RAILS_ROOT}/config/**/*"].sort
-    
     # Set up public path
-    @public_root = "#{RAILS_ROOT}/public"
-    FileUtils.mkdir_p("#{RAILS_ROOT}/public/javascripts")
-    
-    # Track valid options
-    @original_valid_options = PluginAWeek::Helpers::TinyMCEHelper.valid_options.dup
+    @public_root = "#{Rails.root}/public"
+    FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
     
     # Set default STDIN value
     STDIN.gets = 'n'
     STDIN.prompted = false
+  end
+  
+  def test_should_save_latest_version_to_default_target
+    PluginAWeek::TinyMCEHelper.install(:force => true)
     
+    assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
+    
+    source = File.open("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js").readlines.join
+    assert source.include?("majorVersion : '3'");
+    assert source.include?("minorVersion : '0.8'");
+  end
+  
+  def test_should_allow_custom_version
+    PluginAWeek::TinyMCEHelper.install(:version => '3.0.6.2', :force => true)
+    
+    assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
+    
+    source = File.open("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js").readlines.join
+    assert source.include?("majorVersion : '3'");
+    assert source.include?("minorVersion : '0.6.2'");
+  end
+  
+  def test_should_allow_custom_target
+    PluginAWeek::TinyMCEHelper.install(:target => 'public/javascripts/tinymce', :force => true)
+    
+    assert File.exists?("#{Rails.root}/public/javascripts/tinymce")
+  end
+  
+  def test_should_prompt_user_if_base_target_already_exists
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    PluginAWeek::TinyMCEHelper.install
+    
+    assert STDIN.prompted
+  end
+  
+  def test_should_skip_if_target_exists_and_user_skips
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    STDIN.gets = 'n'
+    PluginAWeek::TinyMCEHelper.install
+    
+    assert !File.exists?("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+  end
+  
+  def test_should_not_skip_if_target_exists_and_user_doesnt_skip
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    STDIN.gets = 'y'
+    PluginAWeek::TinyMCEHelper.install
+    
+    assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+  end
+  
+  def test_should_continue_prompting_user_if_target_exists_and_invalid_option_is_typed
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    STDIN.gets = %w(k y)
+    PluginAWeek::TinyMCEHelper.install
+    
+    assert STDIN.gets.chomp.empty?
+    assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+  end
+  
+  def test_install_should_overwrite_existing_folder_if_forced
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    PluginAWeek::TinyMCEHelper.install(:force => true)
+    
+    assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+  end
+  
+  def teardown
+    FileUtils.rmtree(@public_root)
+  end
+end
+
+class TinyMceUpdaterTest < Test::Unit::TestCase
+  def setup
+    # Set up config path
+    @config_root = "#{Rails.root}/config"
+    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", @config_root)
+    @original_config_files = Dir["#{Rails.root}/config/**/*"].sort
+    
+    # Track valid options
+    @original_valid_options = PluginAWeek::TinyMCEHelper.valid_options.dup
+  end
+  
+  def test_should_update_options_if_options_configuration_doesnt_exist
+    FileUtils.rm("#{Rails.root}/config/tiny_mce_options.yml")
+    PluginAWeek::TinyMCEHelper.update_options
+    
+    assert File.exists?("#{Rails.root}/config/tiny_mce_options.yml")
+    options = File.open(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
+    assert_instance_of Array, options
+  end
+  
+  def test_should_update_options_if_options_configuration_exists
+    File.truncate("#{Rails.root}/config/tiny_mce_options.yml", 0)
+    PluginAWeek::TinyMCEHelper.update_options
+    
+    assert File.exists?("#{Rails.root}/config/tiny_mce_options.yml")
+    options = File.open(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
+    assert_instance_of Array, options
+  end
+  
+  def teardown
+    PluginAWeek::TinyMCEHelper.valid_options = @original_valid_options
+  end
+end
+
+class TinyMceUninstallerTest < Test::Unit::TestCase
+  def setup
+    # Set up public path
+    @public_root = "#{Rails.root}/public"
+    FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
+    
+    # Set up config path
+    @config_root = "#{Rails.root}/config"
+    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", @config_root)
+    @original_config_files = Dir["#{Rails.root}/config/**/*"].sort
+  end
+  
+  def test_uninstall_should_remove_options_configuration
+    PluginAWeek::TinyMCEHelper.uninstall
+    assert !File.exists?("#{Rails.root}/config/tiny_mce_options.yml")
+  end
+  
+  def test_uninstall_should_remove_tinymce_source
+    FileUtils.mkdir("#{Rails.root}/public/javascripts/tiny_mce")
+    PluginAWeek::TinyMCEHelper.uninstall
+    
+    assert !File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
+  end
+  
+  def teardown
+    FileUtils.rmtree(@public_root)
+  end
+end
+
+class TinyMceHelperTest < Test::Unit::TestCase
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::AssetTagHelper
+  include ActionView::Helpers::JavaScriptHelper
+  include PluginAWeek::TinyMCEHelper
+  
+  def setup
     # Set up test request
     @request = ActionController::TestRequest.new
     @controller = ActionController::Base.new
@@ -75,100 +204,11 @@ class TinyMceHelperTest < Test::Unit::TestCase
     @controller.send(:initialize_current_url)
     
     # Make sure we always start in a test environment
-    Object.const_set('RAILS_ENV', 'test')
+    silence_warnings {Object.const_set('RAILS_ENV', 'test')}
   end
   
   def test_valid_options_should_not_be_empty
-    assert PluginAWeek::Helpers::TinyMCEHelper.valid_options.any?
-  end
-  
-  def test_install_should_save_latest_version_to_default_target
-    PluginAWeek::Helpers::TinyMCEHelper.install(:force => true)
-    
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce")
-    assert File.open("#{RAILS_ROOT}/public/javascripts/tinymce/changelog").readlines.join.include?('Version 2.1.1.1')
-  end
-  
-  def test_install_should_allow_custom_version
-    PluginAWeek::Helpers::TinyMCEHelper.install(:version => '2.0.8', :force => true)
-    
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce")
-    assert File.open("#{RAILS_ROOT}/public/javascripts/tinymce/changelog").readlines.join.include?('Version 2.0.8')
-  end
-  
-  def test_install_should_allow_custom_target
-    PluginAWeek::Helpers::TinyMCEHelper.install(:target => 'public/javascripts/tiny_mce', :force => true)
-    
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tiny_mce")
-  end
-  
-  def test_install_should_prompt_user_if_base_target_already_exists
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    PluginAWeek::Helpers::TinyMCEHelper.install
-    
-    assert STDIN.prompted
-  end
-  
-  def test_install_should_skip_if_target_exists_and_user_skips
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    STDIN.gets = 'n'
-    PluginAWeek::Helpers::TinyMCEHelper.install
-    
-    assert !File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce/changelog")
-  end
-  
-  def test_install_should_not_skip_if_target_exists_and_user_doesnt_skip
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    STDIN.gets = 'y'
-    PluginAWeek::Helpers::TinyMCEHelper.install
-    
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce/changelog")
-  end
-  
-  def test_install_should_continue_prompting_user_if_target_exists_and_invalid_option_is_typed
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    STDIN.gets = %w(k y)
-    PluginAWeek::Helpers::TinyMCEHelper.install
-    
-    assert STDIN.gets.chomp.empty?
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce/changelog")
-  end
-  
-  def test_install_should_overwrite_existing_folder_if_forced
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    PluginAWeek::Helpers::TinyMCEHelper.install(:force => true)
-    
-    assert File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce/changelog")
-  end
-  
-  def test_uninstall_should_remove_options_configuration
-    PluginAWeek::Helpers::TinyMCEHelper.uninstall
-    assert !File.exists?("#{RAILS_ROOT}/config/tiny_mce_options.yml")
-  end
-  
-  def test_uninstall_should_remove_tinymce_source
-    FileUtils.mkdir("#{RAILS_ROOT}/public/javascripts/tinymce")
-    PluginAWeek::Helpers::TinyMCEHelper.uninstall
-    
-    assert !File.exists?("#{RAILS_ROOT}/public/javascripts/tinymce")
-  end
-  
-  def test_should_update_options_if_options_configuration_doesnt_exist
-    FileUtils.rm("#{RAILS_ROOT}/config/tiny_mce_options.yml")
-    PluginAWeek::Helpers::TinyMCEHelper.update_options
-    
-    assert File.exists?("#{RAILS_ROOT}/config/tiny_mce_options.yml")
-    options = File.open(PluginAWeek::Helpers::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
-    assert_instance_of Array, options
-  end
-  
-  def test_should_update_options_if_options_configuration_exists
-    File.truncate("#{RAILS_ROOT}/config/tiny_mce_options.yml", 0)
-    PluginAWeek::Helpers::TinyMCEHelper.update_options
-    
-    assert File.exists?("#{RAILS_ROOT}/config/tiny_mce_options.yml")
-    options = File.open(PluginAWeek::Helpers::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
-    assert_instance_of Array, options
+    assert PluginAWeek::TinyMCEHelper.valid_options.any?
   end
   
   def test_should_be_using_tiny_mce_if_instance_variable_exists
@@ -182,38 +222,49 @@ class TinyMceHelperTest < Test::Unit::TestCase
   end
   
   def test_should_use_source_file_name_if_in_development
-    Object.const_set('RAILS_ENV', 'development')
-    assert_equal 'tinymce/tiny_mce_src', tiny_mce_file_name
+    silence_warnings {Object.const_set('RAILS_ENV', 'development')}
+    assert_equal 'tiny_mce/tiny_mce_src', tiny_mce_file_name
   end
   
   def test_should_use_compressed_file_name_if_in_test
-    Object.const_set('RAILS_ENV', 'test')
-    assert_equal 'tinymce/tiny_mce', tiny_mce_file_name
+    silence_warnings {Object.const_set('RAILS_ENV', 'test')}
+    assert_equal 'tiny_mce/tiny_mce', tiny_mce_file_name
   end
   
   def test_should_use_compressed_file_name_if_in_production
-    Object.const_set('RAILS_ENV', 'production')
-    assert_equal 'tinymce/tiny_mce', tiny_mce_file_name
+    silence_warnings {Object.const_set('RAILS_ENV', 'production')}
+    assert_equal 'tiny_mce/tiny_mce', tiny_mce_file_name
   end
   
   def test_should_use_environment_file_name_for_javascript_include_in_development
-    Object.const_set('RAILS_ENV', 'development')
-    assert_equal '<script src="/javascripts/tinymce/tiny_mce_src.js" type="text/javascript"></script>', javascript_include_tiny_mce
+    silence_warnings {Object.const_set('RAILS_ENV', 'development')}
+    assert_equal '<script src="/javascripts/tiny_mce/tiny_mce_src.js" type="text/javascript"></script>', javascript_include_tiny_mce
   end
   
   def test_should_use_environment_file_name_for_javascript_include_in_test
-    Object.const_set('RAILS_ENV', 'test')
-    assert_equal '<script src="/javascripts/tinymce/tiny_mce.js" type="text/javascript"></script>', javascript_include_tiny_mce
+    silence_warnings {Object.const_set('RAILS_ENV', 'test')}
+    assert_equal '<script src="/javascripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>', javascript_include_tiny_mce
   end
   
   def test_should_include_conditional_javascript_if_using_tiny_mce
     @uses_tiny_mce = true
-    assert_equal '<script src="/javascripts/tinymce/tiny_mce.js" type="text/javascript"></script>', javascript_include_tiny_mce_if_used
+    assert_equal '<script src="/javascripts/tiny_mce/tiny_mce.js" type="text/javascript"></script>', javascript_include_tiny_mce_if_used
   end
   
   def test_should_not_include_conditional_javascript_if_not_using_tiny_mce
     @uses_tiny_mce = false
     assert_nil javascript_include_tiny_mce_if_used
+  end
+end
+
+class TinyMceHelperScriptTest < Test::Unit::TestCase
+  include ActionView::Helpers::TagHelper
+  include ActionView::Helpers::JavaScriptHelper
+  include PluginAWeek::TinyMCEHelper
+  
+  def setup
+    # Track valid options
+    @original_valid_options = PluginAWeek::TinyMCEHelper.valid_options.dup
   end
   
   def test_script_should_use_textareas_mode_and_simple_theme_by_default
@@ -231,12 +282,12 @@ class TinyMceHelperTest < Test::Unit::TestCase
   end
   
   def test_script_should_not_raise_exception_if_invalid_option_provided_but_valid_options_is_nil
-    PluginAWeek::Helpers::TinyMCEHelper.valid_options = nil
+    PluginAWeek::TinyMCEHelper.valid_options = nil
     assert_nothing_raised {tiny_mce_init_script(:invalid => true)}
   end
   
   def test_script_should_not_raise_exception_if_invalid_option_provided_but_valid_options_is_empty
-    PluginAWeek::Helpers::TinyMCEHelper.valid_options = []
+    PluginAWeek::TinyMCEHelper.valid_options = []
     assert_nothing_raised {tiny_mce_init_script(:invalid => true)}
   end
   
@@ -317,7 +368,6 @@ class TinyMceHelperTest < Test::Unit::TestCase
   end
   
   def teardown
-    FileUtils.rmtree(@public_root)
-    PluginAWeek::Helpers::TinyMCEHelper.valid_options = @original_valid_options
+    PluginAWeek::TinyMCEHelper.valid_options = @original_valid_options
   end
 end

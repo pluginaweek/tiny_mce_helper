@@ -1,5 +1,13 @@
 *SVN*
 
+*0.0.3* (May 5th, 2008)
+
+* Updated documentation
+
+* Change references from RAILS_ROOT to Rails.root
+
+* Use zipped version of TinyMCE instead of tar
+
 *0.0.2* (September 26th, 2007)
 
 * Remove gem dependency on actionpack

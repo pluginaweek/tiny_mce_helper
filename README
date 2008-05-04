@@ -5,10 +5,6 @@ script.
 
 == Resources
 
-Announcement
-
-* http://www.pluginaweek.org
-
 Wiki
 
 * http://wiki.pluginaweek.org/Tiny_mce_helper
@@ -19,11 +15,11 @@ API
 
 Development
 
-* http://dev.pluginaweek.org/browser/trunk/plugins/action_pack/tiny_mce_helper
+* http://dev.pluginaweek.org/browser/trunk/tiny_mce_helper
 
 Source
 
-* http://svn.pluginaweek.org/trunk/plugins/action_pack/tiny_mce_helper
+* http://svn.pluginaweek.org/trunk/tiny_mce_helper
 
 == Description
 
@@ -158,9 +154,12 @@ will generate the following javascript:
     'content_css' : '/stylesheets/tiny_mce_content.css'
   });
 
-To see additional initialization helpers, see the API for PluginAWeek::Helpers::TinyMCEHelper
+To see additional initialization helpers, see the API for PluginAWeek::TinyMCEHelper
 
 == Testing
+
+Before you can run any tests, the following gem must be installed:
+* plugin_test_helper[http://wiki.pluginaweek.org/Plugin_test_helper]
 
 Since the rake tasks for installing TinyMCE and updating the configuration
 options are part of the unit tests, already-downloaded files are included with
@@ -177,4 +176,4 @@ Rails applications. TinyMCE is a WYSIWYG HTML editing component  released under
 the GNU Public License (GPL) by Moxiecode Systems (http://tinymce.moxiecode.com/).
 
 This plugin was originally created by by Blake Watters <blake@near-time.com> and
-later modified by Aaron Pfeifer & Neil Abraham.
+later modified by Aaron Pfeifer.

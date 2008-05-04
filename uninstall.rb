@@ -1,2 +1,2 @@
 # Uninstall TinyMCE
-PluginAWeek::Helpers::TinyMCEHelper.uninstall
+PluginAWeek::TinyMCEHelper.uninstall
