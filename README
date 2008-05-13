@@ -169,6 +169,14 @@ the LIVE environment variable to true.  For example,
 
   rake test LIVE=true
 
+To run against a specific version of Rails:
+
+  rake test RAILS_FRAMEWORK_ROOT=/path/to/rails
+
+== Dependencies
+
+* Rails 2.0 or later
+
 == References
 
 This plugin provides for the installation and utilization of TinyMCE in Ruby on
