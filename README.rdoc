@@ -5,21 +5,21 @@ script.
 
 == Resources
 
-Wiki
-
-* http://wiki.pluginaweek.org/Tiny_mce_helper
-
 API
 
 * http://api.pluginaweek.org/tiny_mce_helper
 
+Bugs
+
+* http://pluginaweek.lighthouseapp.com/projects/13291-tiny_mce_helper
+
 Development
 
-* http://dev.pluginaweek.org/browser/trunk/tiny_mce_helper
+* http://github.com/pluginaweek/tiny_mce_helper
 
 Source
 
-* http://svn.pluginaweek.org/trunk/tiny_mce_helper
+* git://github.com/pluginaweek/tiny_mce_helper.git
 
 == Description
 
@@ -159,7 +159,7 @@ To see additional initialization helpers, see the API for PluginAWeek::TinyMCEHe
 == Testing
 
 Before you can run any tests, the following gem must be installed:
-* plugin_test_helper[http://wiki.pluginaweek.org/Plugin_test_helper]
+* plugin_test_helper[http://github.com/pluginaweek/plugin_test_helper]
 
 Since the rake tasks for installing TinyMCE and updating the configuration
 options are part of the unit tests, already-downloaded files are included with
