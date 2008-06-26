@@ -19,7 +19,7 @@ Rake::RDocTask.new(:rdoc) do |rdoc|
   rdoc.title    = 'TinyMCEHelper'
   rdoc.template = '../rdoc_template.rb'
   rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
+  rdoc.rdoc_files.include('README.rdoc')
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
@@ -29,7 +29,7 @@ spec = Gem::Specification.new do |s|
   s.platform          = Gem::Platform::RUBY
   s.summary           = 'Adds helper methods for creating the TinyMCE initialization script.'
   
-  s.files             = FileList['{lib,tasks,test}/**/*'].to_a - FileList['test/app_root/log/*'].to_a + %w(CHANGELOG init.rb install.rb Rakefile README uninstall.rb)
+  s.files             = FileList['{lib,tasks,test}/**/*'].to_a - FileList['test/app_root/log/*'].to_a + %w(CHANGELOG init.rb install.rb Rakefile README.rdoc uninstall.rb)
   s.require_path      = 'lib'
   s.has_rdoc          = true
   s.test_files        = Dir['test/**/*_test.rb']
