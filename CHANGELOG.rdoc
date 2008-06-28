@@ -1,29 +1,23 @@
-*SVN*
+== master
 
-*0.0.4* (June 22nd, 2008)
+== 0.0.4 / 2008-06-22
 
 * Remove log files from gems
 
-*0.0.3* (May 5th, 2008)
+== 0.0.3 / 2008-05-05
 
 * Updated documentation
-
 * Change references from RAILS_ROOT to Rails.root
-
 * Use zipped version of TinyMCE instead of tar
 
-*0.0.2* (September 26th, 2007)
+== 0.0.2 / 2007-09-26
 
 * Remove gem dependency on actionpack
 
-*0.0.1* (August 20th, 2007)
+== 0.0.1 / 2007-08-20
 
 * Add README documentation
-
 * Add tiny_mce:uninstall and tiny_mce:update rake tasks
-
 * Add working unit tests
-
 * Add installation and uninstallation scripts
-
 * Add rake tasks tiny_mce:install and tiny_mce:update_options
