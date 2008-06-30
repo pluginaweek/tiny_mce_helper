@@ -3,6 +3,9 @@ require File.dirname(__FILE__) + '/../test_helper'
 # Don't go out to the Internet if we're not live
 unless ENV['LIVE']
   class << PluginAWeek::TinyMCEHelper
+    # Whether or not an IO failure should be caused
+    attr_accessor :fail_io
+    
     # Use pages we've already downloaded for Sourceforge and Wiki information
     def open(name, *rest, &block)
       if name.include?('sourceforge')
@@ -16,6 +19,8 @@ unless ENV['LIVE']
     
     # User files we've already downloaded for extracting the TinyMCE soure
     def system(cmd, *args)
+      raise IOError if fail_io
+      
       if cmd == 'wget'
         if args.first =~ /3_0_8/
           FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip", '/tmp/')
@@ -119,6 +124,14 @@ class TinyMceInstallerTest < Test::Unit::TestCase
     PluginAWeek::TinyMCEHelper.install(:force => true)
     
     assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+  end
+  
+  def test_should_not_raise_exception_if_error_occurs_during_io_operation
+    PluginAWeek::TinyMCEHelper.fail_io = true
+    
+    assert_nothing_raised  {PluginAWeek::TinyMCEHelper.install(:force => true)}
+  ensure
+    PluginAWeek::TinyMCEHelper.fail_io = false
   end
   
   def teardown
@@ -268,12 +281,12 @@ class TinyMceHelperScriptTest < Test::Unit::TestCase
   end
   
   def test_script_should_use_textareas_mode_and_simple_theme_by_default
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
         theme : 'simple'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script
   end
   
@@ -296,56 +309,56 @@ class TinyMceHelperScriptTest < Test::Unit::TestCase
   end
   
   def test_script_should_convert_symbols
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
         theme : 'simple'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script(:mode => :textareas)
   end
   
   def test_script_should_convert_numbers
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
         theme : 'simple',
         width : '640'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script(:width => 640)
   end
   
   def test_script_should_convert_arrays
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
         theme : 'simple',
         valid_elements : 'b,p,br,i,u'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script(:valid_elements => %w(b p br i u))
   end
   
   def test_script_should_convert_boolean_true
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         auto_reset_designmode : true,
         mode : 'textareas',
         theme : 'simple'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script(:auto_reset_designmode => true)
   end
   
   def test_script_should_convert_boolean_false
-    expected = <<-end_eval
+    expected = <<-end_str
       tinyMCE.init({
         auto_reset_designmode : false,
         mode : 'textareas',
         theme : 'simple'
       });
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce_init_script(:auto_reset_designmode => false)
   end
   
@@ -354,7 +367,7 @@ class TinyMceHelperScriptTest < Test::Unit::TestCase
   end
   
   def test_tiny_mce_should_wrap_script_in_javascript_tag
-    expected = <<-end_eval
+    expected = <<-end_str
       <script type="text/javascript">
       //<![CDATA[
         tinyMCE.init({
@@ -363,7 +376,7 @@ class TinyMceHelperScriptTest < Test::Unit::TestCase
         });
       //]]>
       </script>
-    end_eval
+    end_str
     assert_html_equal expected, tiny_mce
   end
   
