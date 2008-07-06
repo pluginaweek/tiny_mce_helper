@@ -11,7 +11,7 @@ namespace :tiny_mce do
   
   desc 'Uninstalls TinyMCE and removes any associated configuration files.'
   task :uninstall => :environment do
-    PluginAWeek::TinyMCEHelper.uninstall
+    PluginAWeek::TinyMCEHelper.uninstall(:target => ENV['TARGET'])
   end
   
   desc 'Updates the list of TinyMCE options and stores them in config/tiny_mce_options.yml.'

@@ -1,6 +1,6 @@
 module PluginAWeek #:nodoc:
   # Adds helper methods for generating the TinyMCE initialization script
-  # within your Rails views
+  # within your views
   module TinyMCEHelper
     # The path to the file which contains all valid options that can be used
     # to configure TinyMCE
@@ -22,6 +22,11 @@ module PluginAWeek #:nodoc:
       # Installs TinyMCE by downloading it and adding it to your application's
       # javascripts folder.
       # 
+      # Configuration options:
+      # * +version+ - The version of TinyMCE to install. Default is the latest version.
+      # * +target+ - The path to install TinyMCE to, relative to the project root. Default is "public/javascripts/tiny_mce"
+      # * +force+ - Whether to install TinyMCE, regardless of whether it already exists on the filesystem.
+      # 
       # == Versions
       # 
       # By default, this will install the latest version of TinyMCE.  You can
@@ -29,19 +34,25 @@ module PluginAWeek #:nodoc:
       # passing in the version number.
       # 
       # For example,
-      #   PluginAWeek::TinyMCEHelper.install           #=> Installs the latest version
-      #   PluginAWeek::TinyMCEHelper.install('2.0.8')  #=> Installs version 2.0.8
+      #   PluginAWeek::TinyMCEHelper.install                      # Installs the latest version
+      #   PluginAWeek::TinyMCEHelper.install(:version => '2.0.8') # Installs version 2.0.8
       # 
       # An exception will be raised if the specified version cannot be found.
       # 
       # == Target path
       # 
       # By default, this will install TinyMCE into Rails.root/public/javascripts/tiny_mce.
-      # If you want to install it to a different directory, you can pass in
-      # a parameter with the relative path from Rails.root.
+      # If you want to install it to a different directory, you can pass in a
+      # parameter with the relative path from Rails.root.
       # 
       # For example,
-      #   PluginAWeek::TinyMCEHelper.install(nil, 'public/javascripts/richtext')
+      #   PluginAWeek::TinyMCEHelper.install(:target => 'public/javascripts/richtext')
+      # 
+      # == Conflicting paths
+      # 
+      # If TinyMCE is found to already be installed on the filesystem, a prompt
+      # will be displayed for whether to overwrite the existing directory.  This
+      # prompt can be automatically skipped by passing in the :force option.
       def install(options = {})
         options.assert_valid_keys(:version, :target, :force)
         options.reverse_merge!(:force => false)
@@ -96,12 +107,15 @@ module PluginAWeek #:nodoc:
       end
       
       # Uninstalls the TinyMCE installation and optional configuration file
-      def uninstall
+      # 
+      # Configuration options:
+      # * +target+ - The path that TinyMCE was installed to. Default is "public/javascripts/tiny_mce"
+      def uninstall(options = {})
         # Remove the TinyMCE configuration file
         File.delete(OPTIONS_FILE_PATH)
         
         # Remove the TinyMCE installation
-        FileUtils.rm_rf("#{Rails.root}/public/javascripts/tiny_mce")
+        FileUtils.rm_rf(options[:target] || "#{Rails.root}/public/javascripts/tiny_mce")
       end
       
       # Updates the list of possible configuration options that can be used
@@ -119,14 +133,14 @@ module PluginAWeek #:nodoc:
         options = (doc/'a[@title*="Configuration/"]/').collect {|option| option.to_s}.sort
         options.reject! {|option| option =~ DYNAMIC_OPTIONS}
         
-        File.open("#{Rails.root}/config/tiny_mce_options.yml", 'w') do |out|
+        File.open(OPTIONS_FILE_PATH, 'w') do |out|
           YAML.dump(options, out)
         end
         puts 'Done!' if verbose
       end
     end
     
-    # Are we using TinyMCE?
+    # Is TinyMCE being used?
     def using_tiny_mce?
       @uses_tiny_mce
     end
@@ -204,7 +218,7 @@ module PluginAWeek #:nodoc:
       init_script.chop << "\n});"
     end
     
-    # Generate the TinyMCE 
+    # Generate the TinyMCE. Any arguments will be passed to tiny_mce_init_script.
     def tiny_mce(*args)
       javascript_tag tiny_mce_init_script(*args)
     end
