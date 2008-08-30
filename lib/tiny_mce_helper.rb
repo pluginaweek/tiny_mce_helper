@@ -71,10 +71,10 @@ module PluginAWeek #:nodoc:
           return if option == 'n'
         end
         
+        # Get the url of the TinyMCE version
         require 'hpricot'
         require 'open-uri'
         
-        # Get the url of the TinyMCE version
         doc = Hpricot(open('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430'))
         if version
           version.gsub!('.', '_')
@@ -88,22 +88,26 @@ module PluginAWeek #:nodoc:
         filename = file_element.innerHTML
         file_url = file_element['href']
         
-        # Download and install it
-        Dir.chdir('/tmp/') do
-          begin
-            puts 'Downloading TinyMCE source...' if verbose
-            system('wget', file_url)
-            puts 'Extracting...' if verbose
-            system('unzip', filename)
-            File.delete(filename)
-            FileUtils.mkdir_p(target_path)
-            FileUtils.cp_r("#{source_path}/jscripts/tiny_mce/.", target_path)
-            FileUtils.rmtree(source_path)
-            puts 'Done!' if verbose
-          rescue Object => ex
-            puts "Error: #{ex.inspect}"
+        # Download the file
+        puts 'Downloading TinyMCE source...' if verbose
+        file = open(file_url).path
+        
+        # Extract and install
+        puts 'Extracting...' if verbose
+        
+        require 'zip/zip'
+        require 'zip/zipfilesystem'
+        
+        Zip::ZipFile::open(file) do |zipfile|
+          zipfile.entries.each do |entry|
+            if match = /tinymce\/jscripts\/tiny_mce\/(.*)/.match(entry.name)
+              FileUtils.mkdir_p("#{target_path}/#{File.dirname(match[1])}")
+              entry.extract("#{target_path}/#{match[1]}") { true }
+            end
           end
         end
+        
+        puts 'Done!' if verbose
       end
       
       # Uninstalls the TinyMCE installation and optional configuration file

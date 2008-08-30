@@ -1,5 +1,8 @@
 == master
 
+* Remove references to system wget/unzip calls for cross-platform compatibility
+* Add dependency on RubyZip
+
 == 0.0.4 / 2008-06-22
 
 * Remove log files from gems

@@ -1,40 +1,28 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 # Don't go out to the Internet if we're not live
-unless ENV['LIVE']
-  class << PluginAWeek::TinyMCEHelper
-    # Whether or not an IO failure should be caused
-    attr_accessor :fail_io
-    
-    # Use pages we've already downloaded for Sourceforge and Wiki information
-    def open(name, *rest, &block)
-      if name.include?('sourceforge')
-        name = 'test/files/sourceforge.html'
-      elsif name.include?('wiki')
-        name = 'test/files/wiki.html'
-      end
-      
-      super      
-    end
-    
-    # User files we've already downloaded for extracting the TinyMCE soure
-    def system(cmd, *args)
-      raise IOError if fail_io
-      
-      if cmd == 'wget'
-        if args.first =~ /3_0_8/
-          FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip", '/tmp/')
-        elsif args.first =~ /3_0_6_2/
-          FileUtils.cp("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_6_2.zip", '/tmp/')
-        else
-          super
-        end
+class << PluginAWeek::TinyMCEHelper
+  # Whether or not an IO failure should be caused
+  attr_accessor :fail_io
+  
+  # Use pages we've already downloaded for Sourceforge and Wiki information
+  def open(name, *rest, &block)
+    name = case name
+      when /showfiles/
+        'test/files/sourceforge.html'
+      when /wiki/
+        'test/files/wiki.html'
+      when /3_0_8/
+        "#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip"
+      when /3_0_6_2/
+        "#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_6_2.zip"
       else
-        super
-      end
+        name
     end
+    
+    super      
   end
-end
+end unless ENV['LIVE']
 
 # Simulate user input
 class << STDIN
@@ -66,9 +54,14 @@ class TinyMceInstallerTest < Test::Unit::TestCase
     
     assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
     
-    source = File.open("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js").readlines.join
-    assert source.include?("majorVersion : '3'");
-    assert source.include?("minorVersion : '0.8'");
+    source = File.read("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
+    
+    if live?
+      assert source.include?('tinymce')
+    else
+      assert source.include?("majorVersion : '3'");
+      assert source.include?("minorVersion : '0.8'");
+    end
   end
   
   def test_should_allow_custom_version
@@ -76,7 +69,7 @@ class TinyMceInstallerTest < Test::Unit::TestCase
     
     assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
     
-    source = File.open("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js").readlines.join
+    source = File.read("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
     assert source.include?("majorVersion : '3'");
     assert source.include?("minorVersion : '0.6.2'");
   end
@@ -127,15 +120,15 @@ class TinyMceInstallerTest < Test::Unit::TestCase
   end
   
   def test_should_not_raise_exception_if_error_occurs_during_io_operation
-    PluginAWeek::TinyMCEHelper.fail_io = true
+    PluginAWeek::TinyMCEHelper.fail_io = true unless live?
     
     assert_nothing_raised  {PluginAWeek::TinyMCEHelper.install(:force => true)}
   ensure
-    PluginAWeek::TinyMCEHelper.fail_io = false
+    PluginAWeek::TinyMCEHelper.fail_io = false unless live?
   end
   
   def teardown
-    FileUtils.rmtree(@public_root)
+    FileUtils.rm_rf(@public_root)
   end
 end
 
@@ -155,7 +148,7 @@ class TinyMceUpdaterTest < Test::Unit::TestCase
     PluginAWeek::TinyMCEHelper.update_options
     
     assert File.exists?("#{Rails.root}/config/tiny_mce_options.yml")
-    options = File.open(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
+    options = YAML.load(File.read(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH))
     assert_instance_of Array, options
   end
   
@@ -164,7 +157,7 @@ class TinyMceUpdaterTest < Test::Unit::TestCase
     PluginAWeek::TinyMCEHelper.update_options
     
     assert File.exists?("#{Rails.root}/config/tiny_mce_options.yml")
-    options = File.open(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH) {|f| YAML.load(f.read)}
+    options = YAML.load(File.open(PluginAWeek::TinyMCEHelper::OPTIONS_FILE_PATH))
     assert_instance_of Array, options
   end
   
@@ -198,7 +191,7 @@ class TinyMceUninstallerTest < Test::Unit::TestCase
   end
   
   def teardown
-    FileUtils.rmtree(@public_root)
+    FileUtils.rm_rf(@public_root)
   end
 end
 

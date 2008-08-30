@@ -29,11 +29,6 @@ script.  It also provides various tasks for installing/updating TinyMCE.
 
 === Usage
 
-=== Requirements
-
-Currently, you must be running a version of Linux in order to run the rake
-tasks.
-
 === Installing TinyMCE
 
 To install TinyMCE, you can use the tiny_mce:install task.  This will download
@@ -176,6 +171,8 @@ To run against a specific version of Rails:
 == Dependencies
 
 * Rails 2.0 or later
+* hpricot[http://code.whytheluckystiff.net/hpricot]
+* rubyzip[http://rubyzip.sourceforge.net]
 
 == References
 
