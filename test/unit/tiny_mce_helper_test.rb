@@ -41,7 +41,6 @@ end
 class TinyMceInstallerTest < Test::Unit::TestCase
   def setup
     # Set up public path
-    @public_root = "#{Rails.root}/public"
     FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
     
     # Set default STDIN value
@@ -128,17 +127,12 @@ class TinyMceInstallerTest < Test::Unit::TestCase
   end
   
   def teardown
-    FileUtils.rm_rf(@public_root)
+    FileUtils.rm_rf("#{Rails.root}/public")
   end
 end
 
 class TinyMceUpdaterTest < Test::Unit::TestCase
   def setup
-    # Set up config path
-    @config_root = "#{Rails.root}/config"
-    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", @config_root)
-    @original_config_files = Dir["#{Rails.root}/config/**/*"].sort
-    
     # Track valid options
     @original_valid_options = PluginAWeek::TinyMCEHelper.valid_options.dup
   end
@@ -163,19 +157,14 @@ class TinyMceUpdaterTest < Test::Unit::TestCase
   
   def teardown
     PluginAWeek::TinyMCEHelper.valid_options = @original_valid_options
+    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", "#{Rails.root}/config")
   end
 end
 
 class TinyMceUninstallerTest < Test::Unit::TestCase
   def setup
     # Set up public path
-    @public_root = "#{Rails.root}/public"
     FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
-    
-    # Set up config path
-    @config_root = "#{Rails.root}/config"
-    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", @config_root)
-    @original_config_files = Dir["#{Rails.root}/config/**/*"].sort
   end
   
   def test_uninstall_should_remove_options_configuration
@@ -191,7 +180,8 @@ class TinyMceUninstallerTest < Test::Unit::TestCase
   end
   
   def teardown
-    FileUtils.rm_rf(@public_root)
+    FileUtils.rm_rf("#{Rails.root}/public")
+    FileUtils.cp("#{Rails.root}/config_bak/tiny_mce_options.yml", "#{Rails.root}/config")
   end
 end
 

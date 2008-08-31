@@ -1,3 +1,8 @@
+# Setup default folders
+require 'fileutils'
+FileUtils.rm_rf('test/app_root/config')
+FileUtils.cp_r('test/app_root/config_bak', 'test/app_root/config')
+
 # Load the plugin testing framework
 $:.unshift("#{File.dirname(__FILE__)}/../../plugin_test_helper/lib")
 require 'rubygems'
