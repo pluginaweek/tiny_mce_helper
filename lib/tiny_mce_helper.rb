@@ -75,30 +75,33 @@ module PluginAWeek #:nodoc:
         require 'hpricot'
         require 'open-uri'
         
+        puts "Finding url of TinyMCE-#{version || 'latest'} download..." if verbose
         doc = Hpricot(open('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430'))
         if version
-          version.gsub!('.', '_')
-          file_element = (doc/'tr[@id*="rel0_"] a').detect {|file| file.innerHTML =~ /#{version}.zip$/}
+          url_version = version.gsub('.', '_')
+          file_element = (doc/'tr[@id*="rel0_"] a').detect {|file| file.innerHTML =~ /#{url_version}.zip$/}
           raise ArgumentError, "Could not find TinyMCE version #{version}" if !file_element
         else
-          file_element = (doc/'tr[@id^="pkg0_1rel0_"] a').detect {|file| file.innerHTML.to_s =~ /\d\.zip$/}
+          file_element = (doc/'tr[@id^="pkg0_1rel0_"] a').detect {|file| file.innerHTML.to_s =~ /tinymce_([\d_]+).zip$/}
           raise ArgumentError, 'Could not find latest TinyMCE version' if !file_element
+          
+          version = $1.gsub('_', '.')
         end
         
         filename = file_element.innerHTML
         file_url = file_element['href']
         
         # Download the file
-        puts 'Downloading TinyMCE source...' if verbose
+        puts "Downloading TinyMCE-#{version} source from #{file_url}..." if verbose
         file = open(file_url).path
         
         # Extract and install
-        puts 'Extracting...' if verbose
+        puts "Extracting source from #{file}..." if verbose
         
         require 'zip/zip'
         require 'zip/zipfilesystem'
         
-        Zip::ZipFile::open(file) do |zipfile|
+        Zip::ZipFile.open(file) do |zipfile|
           zipfile.entries.each do |entry|
             if match = /tinymce\/jscripts\/tiny_mce\/(.*)/.match(entry.name)
               FileUtils.mkdir_p("#{target_path}/#{File.dirname(match[1])}")
