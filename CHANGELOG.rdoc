@@ -1,5 +1,7 @@
 == master
 
+* Add more descriptive output during installation
+
 == 0.1.0 / 2008-08-30
 
 * Remove references to system wget/unzip calls for cross-platform compatibility
