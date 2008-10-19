@@ -93,24 +93,26 @@ module PluginAWeek #:nodoc:
         
         # Download the file
         puts "Downloading TinyMCE-#{version} source from #{file_url}..." if verbose
-        file = open(file_url).path
-        
-        # Extract and install
-        puts "Extracting source from #{file}..." if verbose
-        
-        require 'zip/zip'
-        require 'zip/zipfilesystem'
-        
-        Zip::ZipFile.open(file) do |zipfile|
-          zipfile.entries.each do |entry|
-            if match = /tinymce\/jscripts\/tiny_mce\/(.*)/.match(entry.name)
-              FileUtils.mkdir_p("#{target_path}/#{File.dirname(match[1])}")
-              entry.extract("#{target_path}/#{match[1]}") { true }
+        open(file_url) do |file|
+          file_path = file.path
+          
+          # Extract and install
+          puts "Extracting source from #{file_path}..." if verbose
+          
+          require 'zip/zip'
+          require 'zip/zipfilesystem'
+          
+          Zip::ZipFile.open(file_path) do |zipfile|
+            zipfile.entries.each do |entry|
+              if match = /tinymce\/jscripts\/tiny_mce\/(.*)/.match(entry.name)
+                FileUtils.mkdir_p("#{target_path}/#{File.dirname(match[1])}")
+                entry.extract("#{target_path}/#{match[1]}") { true }
+              end
             end
           end
+          
+          puts 'Done!' if verbose
         end
-        
-        puts 'Done!' if verbose
       end
       
       # Uninstalls the TinyMCE installation and optional configuration file
