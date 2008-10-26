@@ -1,5 +1,7 @@
 == master
 
+* Update tests to use ActionView::TestCase
+
 == 0.1.1 / 2008-10-19
 
 * Fix TinyMCE temp file getting closed/deleted too soon after being downloaded [Brandon Goodin]

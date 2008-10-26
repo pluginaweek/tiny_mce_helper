@@ -185,20 +185,10 @@ class TinyMceUninstallerTest < Test::Unit::TestCase
   end
 end
 
-class TinyMceHelperTest < Test::Unit::TestCase
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::AssetTagHelper
-  include ActionView::Helpers::JavaScriptHelper
-  include PluginAWeek::TinyMCEHelper
+class TinyMceHelperTest < ActionView::TestCase
+  tests PluginAWeek::TinyMCEHelper
   
   def setup
-    # Set up test request
-    @request = ActionController::TestRequest.new
-    @controller = ActionController::Base.new
-    @controller.request = @request
-    @controller.instance_eval {@_params = request.path_parameters}
-    @controller.send(:initialize_current_url)
-    
     # Make sure we always start in a test environment
     silence_warnings {Object.const_set('RAILS_ENV', 'test')}
   end
@@ -253,10 +243,8 @@ class TinyMceHelperTest < Test::Unit::TestCase
   end
 end
 
-class TinyMceHelperScriptTest < Test::Unit::TestCase
-  include ActionView::Helpers::TagHelper
-  include ActionView::Helpers::JavaScriptHelper
-  include PluginAWeek::TinyMCEHelper
+class TinyMceHelperScriptTest < ActionView::TestCase
+  tests PluginAWeek::TinyMCEHelper
   
   def setup
     # Track valid options
