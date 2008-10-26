@@ -156,6 +156,10 @@ To see additional initialization helpers, see the API for PluginAWeek::TinyMCEHe
 Before you can run any tests, the following gem must be installed:
 * plugin_test_helper[http://github.com/pluginaweek/plugin_test_helper]
 
+To run against a specific version of Rails:
+
+  rake test RAILS_FRAMEWORK_ROOT=/path/to/rails
+
 Since the rake tasks for installing TinyMCE and updating the configuration
 options are part of the unit tests, already-downloaded files are included with
 the plugin.  If you want to perform a "live" test which actually downloads the
@@ -163,10 +167,6 @@ files off the Internet (rather than using the local versions), you must set
 the LIVE environment variable to true.  For example,
 
   rake test LIVE=true
-
-To run against a specific version of Rails:
-
-  rake test RAILS_FRAMEWORK_ROOT=/path/to/rails
 
 == Dependencies
 
