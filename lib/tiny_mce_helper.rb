@@ -68,6 +68,7 @@ module PluginAWeek #:nodoc:
           while !%w(y n).include?(option = STDIN.gets.chop)
             print "Invalid option. Overwrite #{target_path}? (y/n): "
           end
+          
           return if option == 'n'
         end
         

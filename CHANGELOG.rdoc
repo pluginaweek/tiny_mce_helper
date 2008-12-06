@@ -1,5 +1,6 @@
 == master
 
+* Update tests to use mocha
 * Update tests to use ActionView::TestCase
 
 == 0.1.1 / 2008-10-19

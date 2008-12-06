@@ -20,3 +20,12 @@ Test::Unit::TestCase.class_eval do
       assert_equal expected.strip.gsub(/\n\s*/, ''), actual.strip.gsub(/\n\s*/, '')
     end
 end
+
+# Allow skipping of tests that require mocha
+def uses_mocha(description)
+  require 'rubygems'
+  require 'mocha'
+  yield
+rescue LoadError
+  $stderr.puts "Skipping #{description} tests. `gem install mocha` and try again."
+end
