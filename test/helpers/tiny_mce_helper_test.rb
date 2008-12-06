@@ -107,7 +107,7 @@ class TinyMceHelperScriptTest < ActionView::TestCase
     assert_nothing_raised {tiny_mce_init_script(:theme_advanced_buttons_1 => '', :theme_advanced_container_test => '')}
   end
   
-  def test_should_convert_symbols
+  def test_should_convert_symbols_to_strings
     expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
@@ -128,7 +128,7 @@ class TinyMceHelperScriptTest < ActionView::TestCase
     assert_html_equal expected, tiny_mce_init_script(:width => 640)
   end
   
-  def test_should_convert_arrays_to_comma_delimited_arrays
+  def test_should_convert_arrays_to_comma_delimited_values
     expected = <<-end_str
       tinyMCE.init({
         mode : 'textareas',
