@@ -1,16 +1,16 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 class TinyMceHelperTest < ActionView::TestCase
-  tests PluginAWeek::TinyMCEHelper
+  tests TinyMCEHelper
   
   def test_valid_options_should_not_be_empty
-    assert PluginAWeek::TinyMCEHelper.valid_options.any?
+    assert TinyMCEHelper.valid_options.any?
   end
 end
 
 uses_mocha 'stubbing Rails.env' do
   class TinyMceHelperFilenameTest < ActionView::TestCase
-    tests PluginAWeek::TinyMCEHelper
+    tests TinyMCEHelper
     
     def test_should_use_source_file_name_if_in_development
       Rails.stubs(:env).returns(ActiveSupport::StringInquirer.new('development'))
@@ -40,7 +40,7 @@ uses_mocha 'stubbing Rails.env' do
 end
 
 class TinyMceHelperDisabledTest < ActionView::TestCase
-  tests PluginAWeek::TinyMCEHelper
+  tests TinyMCEHelper
   
   def setup
     @uses_tiny_mce = false
@@ -56,7 +56,7 @@ class TinyMceHelperDisabledTest < ActionView::TestCase
 end
 
 class TinyMceHelperEnabledTest < ActionView::TestCase
-  tests PluginAWeek::TinyMCEHelper
+  tests TinyMCEHelper
   
   def setup
     @uses_tiny_mce = true
@@ -72,11 +72,11 @@ class TinyMceHelperEnabledTest < ActionView::TestCase
 end
 
 class TinyMceHelperScriptTest < ActionView::TestCase
-  tests PluginAWeek::TinyMCEHelper
+  tests TinyMCEHelper
   
   def setup
     # Track valid options
-    @original_valid_options = PluginAWeek::TinyMCEHelper.valid_options.dup
+    @original_valid_options = TinyMCEHelper.valid_options.dup
   end
   
   def test_should_use_textareas_mode_and_simple_theme_by_default
@@ -94,12 +94,12 @@ class TinyMceHelperScriptTest < ActionView::TestCase
   end
   
   def test_should_not_raise_exception_if_invalid_option_provided_but_valid_options_is_nil
-    PluginAWeek::TinyMCEHelper.valid_options = nil
+    TinyMCEHelper.valid_options = nil
     assert_nothing_raised {tiny_mce_init_script(:invalid => true)}
   end
   
   def test_should_not_raise_exception_if_invalid_option_provided_but_valid_options_is_empty
-    PluginAWeek::TinyMCEHelper.valid_options = []
+    TinyMCEHelper.valid_options = []
     assert_nothing_raised {tiny_mce_init_script(:invalid => true)}
   end
   
@@ -166,7 +166,7 @@ class TinyMceHelperScriptTest < ActionView::TestCase
   end
   
   def teardown
-    PluginAWeek::TinyMCEHelper.valid_options = @original_valid_options
+    TinyMCEHelper.valid_options = @original_valid_options
   end
 end
 

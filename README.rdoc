@@ -149,7 +149,7 @@ will generate the following javascript:
     'content_css' : '/stylesheets/tiny_mce_content.css'
   });
 
-To see additional initialization helpers, see the API for PluginAWeek::TinyMCEHelper
+To see additional initialization helpers, see the API for TinyMCEHelper
 
 == Testing
 
