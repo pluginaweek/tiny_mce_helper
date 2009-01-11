@@ -22,9 +22,12 @@ module TinyMCEHelper
     # javascripts folder.
     # 
     # Configuration options:
-    # * +version+ - The version of TinyMCE to install. Default is the latest version.
-    # * +target+ - The path to install TinyMCE to, relative to the project root. Default is "public/javascripts/tiny_mce"
-    # * +force+ - Whether to install TinyMCE, regardless of whether it already exists on the filesystem.
+    # * <tt>:version</tt> - The version of TinyMCE to install. Default is the
+    #   latest version.
+    # * <tt>:target</tt> - The path to install TinyMCE to, relative to the
+    #   project root. Default is "public/javascripts/tiny_mce"
+    # * <tt>:force</tt> - Whether to install TinyMCE, regardless of whether it
+    #   already exists on the filesystem.
     # 
     # == Versions
     # 
