@@ -1,5 +1,7 @@
 == master
 
+== 0.3.0 / 2009-04-14
+
 * No longer require that the Sourceforge project page be downloaded when determining the location of a custom version
 * Require at least TinyMCE 3.2.2 be installed
 * Update to new TinyMCE file structure
