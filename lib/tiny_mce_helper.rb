@@ -74,25 +74,21 @@ module TinyMCEHelper
         return if option == 'n'
       end
       
-      # Get the url of the TinyMCE version
-      require 'hpricot'
       require 'open-uri'
       
-      puts "Finding url of TinyMCE-#{version || 'latest'} download..." if verbose
-      doc = Hpricot(open('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430'))
-      if version
-        url_version = version.gsub('.', '_')
-        file_element = (doc/'tr[@id*="rel0_"] a').detect {|file| file.innerHTML =~ /#{url_version}.zip$/}
-        raise ArgumentError, "Could not find TinyMCE version #{version}" if !file_element
-      else
+      # Get the latest TinyMCE version
+      unless version
+        require 'hpricot'
+        
+        puts 'Finding latest version of TinyMCE to download...' if verbose
+        doc = Hpricot(open('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430'))
         file_element = (doc/'tr[@id^="pkg0_1rel0_"] a').detect {|file| file.innerHTML.to_s =~ /tinymce_([\d_]+).zip$/}
         raise ArgumentError, 'Could not find latest TinyMCE version' if !file_element
         
-        version = $1.gsub('_', '.')
+        version = $1. gsub('_', '.')
       end
       
-      filename = file_element.innerHTML
-      file_url = file_element['href']
+      file_url = "http://prdownloads.sourceforge.net/tinymce/tinymce_#{version.gsub('.', '_')}.zip?download"
       
       # Download the file
       puts "Downloading TinyMCE-#{version} source from #{file_url}..." if verbose
@@ -107,7 +103,7 @@ module TinyMCEHelper
         
         Zip::ZipFile.open(file_path) do |zipfile|
           zipfile.entries.each do |entry|
-            if match = /tinymce\/jscripts\/tiny_mce\/(.*)/.match(entry.name)
+            if match = /jscripts\/tiny_mce\/(.*)/.match(entry.name)
               FileUtils.mkdir_p("#{target_path}/#{File.dirname(match[1])}")
               entry.extract("#{target_path}/#{match[1]}") { true }
             end

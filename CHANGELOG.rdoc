@@ -1,5 +1,10 @@
 == master
 
+* No longer require that the Sourceforge project page be downloaded when determining the location of a custom version
+* Require at least TinyMCE 3.2.2 be installed
+* Update to new TinyMCE file structure
+* Update to new Sourceforge downloads location
+
 == 0.2.0 / 2008-12-14
 
 * Remove the PluginAWeek namespace

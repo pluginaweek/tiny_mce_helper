@@ -3,14 +3,13 @@ require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 uses_mocha 'mocking install/update' do
   class TinyMceInstallerTest < Test::Unit::TestCase
     def setup
-      TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html')) unless live?
-      
       # Set up public path
       FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
     end
     
     def test_should_save_latest_version_to_default_target
-      TinyMCEHelper.expects(:open).with('http://downloads.sourceforge.net/tinymce/tinymce_3_0_8.zip?modtime=1209567317&big_mirror=0').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip")) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html')) unless live?
+      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip")) unless live?
       TinyMCEHelper.install(:force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
@@ -21,23 +20,24 @@ uses_mocha 'mocking install/update' do
         assert source.include?('tinymce')
       else
         assert source.include?("majorVersion : '3'");
-        assert source.include?("minorVersion : '0.8'");
+        assert source.include?("minorVersion : '2.2.3'");
       end
     end
     
     def test_should_allow_custom_version
-      TinyMCEHelper.expects(:open).with('http://downloads.sourceforge.net/tinymce/tinymce_3_0_6_2.zip?modtime=1207580953&big_mirror=0').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_6_2.zip")) unless live?
-      TinyMCEHelper.install(:version => '3.0.6.2', :force => true)
+      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2.zip")) unless live?
+      TinyMCEHelper.install(:version => '3.2.2', :force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
       
       source = File.read("#{Rails.root}/public/javascripts/tiny_mce/tiny_mce_src.js")
       assert source.include?("majorVersion : '3'");
-      assert source.include?("minorVersion : '0.6.2'");
+      assert source.include?("minorVersion : '2.2'");
     end
     
     def test_should_allow_custom_target
-      TinyMCEHelper.expects(:open).with('http://downloads.sourceforge.net/tinymce/tinymce_3_0_8.zip?modtime=1209567317&big_mirror=0').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip")) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html')) unless live?
+      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip")) unless live?
       TinyMCEHelper.install(:target => 'public/javascripts/tinymce', :force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tinymce")
@@ -105,7 +105,7 @@ uses_mocha 'mocking install/update' do
       def expects_file_requests
         unless live?
           TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html'))
-          TinyMCEHelper.expects(:open).with('http://downloads.sourceforge.net/tinymce/tinymce_3_0_8.zip?modtime=1209567317&big_mirror=0').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_0_8.zip"))
+          TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip"))
         end
       end
   end
