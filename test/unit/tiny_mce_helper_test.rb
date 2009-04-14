@@ -1,7 +1,7 @@
 require File.expand_path(File.dirname(__FILE__) + '/../test_helper')
 
 uses_mocha 'mocking install/update' do
-  class TinyMceInstallerTest < Test::Unit::TestCase
+  class TinyMceInstallerTest < ActiveSupport::TestCase
     def setup
       # Set up public path
       FileUtils.mkdir_p("#{Rails.root}/public/javascripts")
@@ -48,7 +48,7 @@ uses_mocha 'mocking install/update' do
     end
   end
 
-  class TinyMceInstallerExistingTest < Test::Unit::TestCase
+  class TinyMceInstallerExistingTest < ActiveSupport::TestCase
     def setup
       # Set up public path
       FileUtils.mkdir_p("#{Rails.root}/public/javascripts/tiny_mce")
@@ -110,7 +110,7 @@ uses_mocha 'mocking install/update' do
       end
   end
 
-  class TinyMceUpdaterTest < Test::Unit::TestCase
+  class TinyMceUpdaterTest < ActiveSupport::TestCase
     def setup
       TinyMCEHelper.expects(:open).with('http://wiki.moxiecode.com/index.php/TinyMCE:Configuration').returns(open('test/files/sourceforge.html')) unless live?
       
@@ -143,7 +143,7 @@ uses_mocha 'mocking install/update' do
   end
 end
 
-class TinyMceUninstallerTest < Test::Unit::TestCase
+class TinyMceUninstallerTest < ActiveSupport::TestCase
   def setup
     # Set up public path
     FileUtils.mkdir_p("#{Rails.root}/public/javascripts")

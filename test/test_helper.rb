@@ -10,7 +10,7 @@ require 'plugin_test_helper'
 
 EXPANDED_RAILS_ROOT = File.expand_path(Rails.root)
 
-Test::Unit::TestCase.class_eval do
+ActiveSupport::TestCase.class_eval do
   protected
     def live?
       ENV['LIVE']
