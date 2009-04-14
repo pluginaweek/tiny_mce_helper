@@ -37,7 +37,7 @@ module TinyMCEHelper
     # 
     # For example,
     #   TinyMCEHelper.install                      # Installs the latest version
-    #   TinyMCEHelper.install(:version => '2.0.8') # Installs version 2.0.8
+    #   TinyMCEHelper.install(:version => '3.2.2') # Installs version 3.2.2
     # 
     # An exception will be raised if the specified version cannot be found.
     # 

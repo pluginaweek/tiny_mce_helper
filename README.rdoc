@@ -171,7 +171,7 @@ the LIVE environment variable to true.  For example,
 == Dependencies
 
 * Rails 2.0 or later
-* tiny_mce 3.2.2 or later
+* TinyMCE 3.2.2 or later
 * hpricot[http://code.whytheluckystiff.net/hpricot]
 * rubyzip[http://rubyzip.sourceforge.net]
 
