@@ -1,5 +1,7 @@
 == master
 
+* Update to use Sourceforge's RSS feed for determining latest version / files locations
+
 == 0.3.0 / 2009-04-14
 
 * No longer require that the Sourceforge project page be downloaded when determining the location of a custom version

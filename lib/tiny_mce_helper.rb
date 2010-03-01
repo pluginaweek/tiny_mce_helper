@@ -74,21 +74,22 @@ module TinyMCEHelper
         return if option == 'n'
       end
       
+      # Get the TinyMCE file list
+      puts 'Looking up TinyMCE RSS feed...' if verbose
       require 'open-uri'
+      require 'rss/2.0'
+      rss = RSS::Parser.parse(open('http://sourceforge.net/api/file/index/project-id/103281/mtime/desc/rss?path=/TinyMCE'))
       
-      # Get the latest TinyMCE version
-      unless version
-        require 'hpricot'
-        
-        puts 'Finding latest version of TinyMCE to download...' if verbose
-        doc = Hpricot(open('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430'))
-        file_element = (doc/'tr[@id^="pkg0_1rel0_"] a').detect {|file| file.innerHTML.to_s =~ /tinymce_([\d_]+).zip$/}
-        raise ArgumentError, 'Could not find latest TinyMCE version' if !file_element
-        
-        version = $1. gsub('_', '.')
+      # Find the item matching the version
+      matcher = version ? /tinymce_#{version.gsub('.', '_')}.zip/ : /tinymce_([\d_]+).zip/
+      item_version = rss.channel.items.detect do |item|
+        item.link =~ matcher
       end
       
-      file_url = "http://prdownloads.sourceforge.net/tinymce/tinymce_#{version.gsub('.', '_')}.zip?download"
+      raise ArgumentError, "Could not find #{version ? "TinyMCE #{version}" : 'latest TinyMCE'}" unless item_version
+      
+      version ||= $1.gsub('_', '.')
+      file_url = item_version.link
       
       # Download the file
       puts "Downloading TinyMCE-#{version} source from #{file_url}..." if verbose

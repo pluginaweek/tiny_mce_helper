@@ -8,8 +8,8 @@ uses_mocha 'mocking install/update' do
     end
     
     def test_should_save_latest_version_to_default_target
-      TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html')) unless live?
-      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip")) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/api/file/index/project-id/103281/mtime/desc/rss?path=/TinyMCE').returns(open('test/files/sourceforge.rss')) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/projects/tinymce/files%2FTinyMCE%2F3.2.7%2Ftinymce_3_2_7.zip/download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_7.zip")) unless live?
       TinyMCEHelper.install(:force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
@@ -20,12 +20,13 @@ uses_mocha 'mocking install/update' do
         assert source.include?('tinymce')
       else
         assert source.include?("majorVersion : '3'");
-        assert source.include?("minorVersion : '2.2.3'");
+        assert source.include?("minorVersion : '2.7'");
       end
     end
     
     def test_should_allow_custom_version
-      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2.zip")) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/api/file/index/project-id/103281/mtime/desc/rss?path=/TinyMCE').returns(open('test/files/sourceforge.rss')) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/projects/tinymce/files%2FTinyMCE%2F3.2.2%2Ftinymce_3_2_2.zip/download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2.zip")) unless live?
       TinyMCEHelper.install(:version => '3.2.2', :force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tiny_mce")
@@ -36,8 +37,8 @@ uses_mocha 'mocking install/update' do
     end
     
     def test_should_allow_custom_target
-      TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html')) unless live?
-      TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip")) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/api/file/index/project-id/103281/mtime/desc/rss?path=/TinyMCE').returns(open('test/files/sourceforge.rss')) unless live?
+      TinyMCEHelper.expects(:open).with('http://sourceforge.net/projects/tinymce/files%2FTinyMCE%2F3.2.7%2Ftinymce_3_2_7.zip/download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_7.zip")) unless live?
       TinyMCEHelper.install(:target => 'public/javascripts/tinymce', :force => true)
       
       assert File.exists?("#{Rails.root}/public/javascripts/tinymce")
@@ -104,15 +105,15 @@ uses_mocha 'mocking install/update' do
     private
       def expects_file_requests
         unless live?
-          TinyMCEHelper.expects(:open).with('http://sourceforge.net/project/showfiles.php?group_id=103281&package_id=111430').returns(open('test/files/sourceforge.html'))
-          TinyMCEHelper.expects(:open).with('http://prdownloads.sourceforge.net/tinymce/tinymce_3_2_2_3.zip?download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_2_3.zip"))
+          TinyMCEHelper.expects(:open).with('http://sourceforge.net/api/file/index/project-id/103281/mtime/desc/rss?path=/TinyMCE').returns(open('test/files/sourceforge.rss'))
+          TinyMCEHelper.expects(:open).with('http://sourceforge.net/projects/tinymce/files%2FTinyMCE%2F3.2.7%2Ftinymce_3_2_7.zip/download').yields(open("#{EXPANDED_RAILS_ROOT}/../files/tinymce_3_2_7.zip"))
         end
       end
   end
 
   class TinyMceUpdaterTest < ActiveSupport::TestCase
     def setup
-      TinyMCEHelper.expects(:open).with('http://wiki.moxiecode.com/index.php/TinyMCE:Configuration').returns(open('test/files/sourceforge.html')) unless live?
+      TinyMCEHelper.expects(:open).with('http://wiki.moxiecode.com/index.php/TinyMCE:Configuration').returns(open('test/files/wiki.html')) unless live?
       
       # Track valid options
       @original_valid_options = TinyMCEHelper.valid_options.dup
