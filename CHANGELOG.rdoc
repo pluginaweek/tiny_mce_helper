@@ -1,5 +1,6 @@
 == master
 
+* Release gems via rake-gemcutter instead of rubyforge
 * Update to use Sourceforge's RSS feed for determining latest version / files locations
 
 == 0.3.0 / 2009-04-14
