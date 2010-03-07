@@ -6,7 +6,7 @@ require 'rake/gempackagetask'
 
 spec = Gem::Specification.new do |s|
   s.name              = 'tiny_mce_helper'
-  s.version           = '0.3.0'
+  s.version           = '0.3.1'
   s.platform          = Gem::Platform::RUBY
   s.summary           = 'Adds helper methods for creating the TinyMCE initialization script in Rails'
   s.description       = s.summary
