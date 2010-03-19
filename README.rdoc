@@ -7,7 +7,7 @@ script.
 
 API
 
-* http://api.pluginaweek.org/tiny_mce_helper
+* http://rdoc.info/projects/pluginaweek/tiny_mce_helper
 
 Bugs
 
