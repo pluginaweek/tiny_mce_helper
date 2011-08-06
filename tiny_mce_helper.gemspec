@@ -14,4 +14,8 @@ Gem::Specification.new do |s|
   s.test_files        = `git ls-files -- test/*`.split("\n")
   s.rdoc_options      = %w(--line-numbers --inline-source --title tiny_mce_helper --main README.rdoc)
   s.extra_rdoc_files  = %w(README.rdoc CHANGELOG.rdoc)
+  
+  s.add_development_dependency("rake")
+  s.add_development_dependency("mocha")
+  s.add_development_dependency("plugin_test_helper", ">= 0.3.2")
 end
