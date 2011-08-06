@@ -1,4 +1,4 @@
-= tiny_mce_helper
+= tiny_mce_helper http://travis-ci.org/pluginaweek/tiny_mce_helper.png
 
 +tiny_mce_helper+ adds helper methods for creating the TinyMCE initialization
 script.
@@ -16,6 +16,10 @@ Bugs
 Development
 
 * http://github.com/pluginaweek/tiny_mce_helper
+
+Testing
+
+* http://travis-ci.org/pluginaweek/tiny_mce_helper
 
 Source
 
