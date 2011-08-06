@@ -11,7 +11,7 @@ API
 
 Bugs
 
-* http://pluginaweek.lighthouseapp.com/projects/13291-tiny_mce_helper
+* http://github.com/pluginaweek/tiny_mce_helper/issues
 
 Development
 
