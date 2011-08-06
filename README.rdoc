@@ -21,6 +21,10 @@ Source
 
 * git://github.com/pluginaweek/tiny_mce_helper.git
 
+Mailing List
+
+* http://groups.google.com/group/pluginaweek-talk
+
 == Description
 
 TinyMCE is a rich text editor written in Javascript.  This helper plugin helps
